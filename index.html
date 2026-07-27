@@ -5,46 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>건강한 화장실 생활 대시보드</title>
   
-  <!-- Google Fonts: Outfit & JetBrains Mono -->
+  <!-- Google Fonts: Quicksand (Stitch Spec) & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
-      /* Sunset Amber & Indigo Palette */
-      --bg-color: #fdf8f0;             /* Warm Amber Light Background */
+      /* Stitch Design System - Bathroom Health Timer Palette */
+      --bg-color: #f8f9fa;             /* Flat Neutral Background */
       --surface: #ffffff;
-      --surface-dim: #f3eae0;
+      --surface-dim: #d9dadb;
+      --surface-container: #edeeef;
+      --surface-container-low: #f3f4f5;
       
-      --primary: #d97706;              /* Amber */
-      --primary-light: #f59e0b;
-      --primary-dark: #b45309;
-      --primary-glow: rgba(217, 119, 6, 0.15);
+      --primary: #006d36;              /* Fresh Green */
+      --primary-container: #4ade80;
+      --on-primary-container: #005e2d;
       
-      --indigo: #312e81;               /* Dark Indigo */
-      --indigo-light: #4338ca;
+      --secondary: #735c00;            /* Warning Yellow */
+      --secondary-container: #fed01b;
       
-      --text-main: #1e1b4b;            /* Deep Indigo for text */
-      --text-muted: #6b6a80;           
+      --tertiary: #a83639;             /* Alert Red */
+      --tertiary-container: #ffb0ad;
       
-      --outline: #e5d5c5;
+      --text-main: #191c1d;            
+      --text-muted: #3d4a3e;           
+      --outline: #6d7b6d;
+      --outline-variant: #bccabb;
       
       /* Status Colors */
       --color-off: #cbd5e1;
-      --color-green: #10b981;
-      --color-yellow: #f59e0b;
-      --color-red: #ef4444;
+      --color-green: #4ade80;
+      --color-yellow: #fed01b;
+      --color-red: #a83639;
       
-      /* Shadows */
-      --shadow-soft: 0 10px 30px rgba(49, 46, 129, 0.04);
-      --shadow-medium: 0 16px 40px rgba(49, 46, 129, 0.08);
-      --shadow-glow: 0 0 25px rgba(217, 119, 6, 0.3);
+      /* Soft Ambient Shadows tinted with primary colors */
+      --shadow-ambient: 0 10px 25px rgba(0, 109, 54, 0.08);
+      --shadow-glow-green: 0 0 25px rgba(74, 222, 128, 0.4);
+      --shadow-glow-yellow: 0 0 25px rgba(254, 208, 27, 0.4);
+      --shadow-glow-red: 0 0 25px rgba(168, 54, 57, 0.4);
       
-      --font-ui: 'Outfit', sans-serif;
+      --font-ui: 'Quicksand', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
 
@@ -66,7 +71,7 @@
       transition: background-color 0.3s ease;
     }
 
-    /* Mobile Container Frame */
+    /* Mobile Container Frame - Soft Minimalist */
     .app-container {
       width: 100%;
       max-width: 480px;
@@ -76,14 +81,14 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 30px 60px rgba(49, 46, 129, 0.15);
-      border: 1px solid var(--outline);
+      box-shadow: 0 20px 50px rgba(25, 28, 29, 0.1);
+      border: 1px solid var(--outline-variant);
     }
 
     @media (min-width: 481px) {
       .app-container {
-        height: 880px;
-        border-radius: 40px;
+        height: 900px;
+        border-radius: 36px;
         border: 10px solid var(--text-main);
       }
     }
@@ -95,32 +100,32 @@
       justify-content: space-between;
       align-items: center;
       z-index: 10;
-      background-color: rgba(253, 248, 240, 0.8);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(217, 119, 6, 0.08);
+      background-color: rgba(248, 249, 250, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 109, 54, 0.08);
     }
 
     .brand-title {
       font-size: 20px;
-      font-weight: 800;
-      color: var(--indigo);
+      font-weight: 700;
+      color: var(--primary);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .brand-title i {
-      color: var(--primary);
+      color: var(--primary-container);
     }
 
     .status-badge {
-      padding: 8px 16px;
-      border-radius: 24px;
+      padding: 8px 18px;
+      border-radius: 999px; /* Pill Shape */
       font-size: 12px;
       font-weight: 700;
       background: var(--surface);
-      border: 1px solid var(--outline);
-      box-shadow: var(--shadow-soft);
+      border: 2px solid var(--outline-variant);
+      box-shadow: var(--shadow-ambient);
       display: flex;
       align-items: center;
       gap: 6px;
@@ -130,39 +135,36 @@
     }
 
     .status-badge:hover {
-      border-color: var(--primary-light);
-      box-shadow: var(--shadow-medium);
+      border-color: var(--primary);
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: var(--color-red);
-      box-shadow: 0 0 8px var(--color-red);
+      background-color: var(--tertiary);
       transition: all 0.3s ease;
     }
 
     .status-badge.connected {
-      background-color: #ecfdf5;
-      color: var(--color-green);
-      border-color: rgba(16, 185, 129, 0.2);
+      background-color: var(--surface-container-low);
+      color: var(--primary);
+      border-color: var(--primary-container);
     }
 
     .status-badge.connected .status-dot {
-      background-color: var(--color-green);
-      box-shadow: 0 0 8px var(--color-green);
+      background-color: var(--primary-container);
+      box-shadow: 0 0 8px var(--primary-container);
     }
 
     .status-badge.connecting {
-      background-color: #fef3c7;
-      color: var(--primary-dark);
-      border-color: rgba(217, 119, 6, 0.2);
+      background-color: var(--surface-container);
+      color: var(--secondary);
+      border-color: var(--secondary-container);
     }
 
     .status-badge.connecting .status-dot {
-      background-color: var(--primary);
-      box-shadow: 0 0 8px var(--primary);
+      background-color: var(--secondary-container);
       animation: pulse 1s infinite alternate;
     }
 
@@ -181,28 +183,27 @@
       gap: 20px;
     }
 
-    /* UI Premium Cards */
+    /* Cards - Soft Rounded Containers */
     .dashboard-card {
       background: var(--surface);
-      border-radius: 28px;
+      border-radius: 24px; /* 1.5rem spec */
       padding: 24px;
-      border: 1px solid rgba(217, 119, 6, 0.08);
-      box-shadow: var(--shadow-soft);
+      border: 2px solid var(--surface-container);
+      box-shadow: var(--shadow-ambient);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .dashboard-card:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-medium);
     }
 
     .card-title {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.05em;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -212,7 +213,7 @@
       color: var(--primary);
     }
 
-    /* Radial Timer Circular Gauge */
+    /* Circular Timer (Stitch specifications) */
     .timer-gauge-container {
       display: flex;
       flex-direction: column;
@@ -222,26 +223,26 @@
 
     .timer-ring-outer {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 220px;
+      height: 220px;
       border-radius: 50%;
       background: var(--bg-color);
-      border: 1px solid var(--outline);
+      border: 1px solid var(--outline-variant);
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: inset 0 4px 10px rgba(49, 46, 129, 0.03);
+      box-shadow: inset 0 6px 12px rgba(25, 28, 29, 0.04);
     }
 
     .timer-ring-outer::after {
       content: '';
       position: absolute;
-      width: 160px;
-      height: 160px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
       background: var(--surface);
-      border: 1px solid var(--outline);
-      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--outline-variant);
+      box-shadow: var(--shadow-ambient);
     }
 
     .timer-progress {
@@ -250,8 +251,8 @@
       height: 100%;
       border-radius: 50%;
       background: conic-gradient(var(--timer-color, var(--primary)) var(--timer-angle, 0deg), transparent var(--timer-angle, 0deg));
-      mask: radial-gradient(transparent 79px, #000 80px);
-      -webkit-mask: radial-gradient(transparent 79px, #000 80px);
+      mask: radial-gradient(transparent 89px, #000 90px);
+      -webkit-mask: radial-gradient(transparent 89px, #000 90px);
       z-index: 1;
       transform: rotate(-90deg);
       transition: background 0.5s ease, transform 0.1s linear;
@@ -267,10 +268,10 @@
 
     .timer-time-display {
       font-family: var(--font-mono);
-      font-size: 38px;
+      font-size: 52px; /* Large Legible Spec */
       font-weight: 700;
       color: var(--text-main);
-      letter-spacing: -1px;
+      letter-spacing: -2px;
     }
 
     .timer-status-text {
@@ -278,7 +279,7 @@
       font-size: 13px;
       font-weight: 700;
       color: var(--text-muted);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.05em;
     }
 
     /* LED Status Card */
@@ -286,7 +287,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--surface);
     }
 
     .led-info {
@@ -296,45 +296,44 @@
     }
 
     .led-bulb-wrapper {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: #e2e8f0;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%; /* Perfect Circle Spec */
+      background: var(--surface-container);
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 24px;
-      color: #94a3b8;
+      font-size: 26px;
+      color: var(--outline);
       transition: all 0.4s ease;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-      border: 1px solid var(--outline);
+      border: 2px solid var(--outline-variant);
     }
 
     .led-bulb-wrapper.active-green {
-      background: #ecfdf5;
+      background: #e6f7ed;
       color: var(--color-green);
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-      border-color: rgba(16, 185, 129, 0.3);
+      box-shadow: var(--shadow-glow-green);
+      border-color: var(--primary-container);
     }
 
     .led-bulb-wrapper.active-yellow {
       background: #fffbeb;
       color: var(--color-yellow);
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
-      border-color: rgba(245, 158, 11, 0.3);
+      box-shadow: var(--shadow-glow-yellow);
+      border-color: var(--secondary-container);
     }
 
     .led-bulb-wrapper.active-red {
-      background: #fef2f2;
+      background: #fdf2f2;
       color: var(--color-red);
-      box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
-      border-color: rgba(239, 68, 68, 0.3);
-      animation: flash-red 1s infinite alternate;
+      box-shadow: var(--shadow-glow-red);
+      border-color: var(--tertiary-container);
+      animation: flash-red 0.8s infinite alternate;
     }
 
     @keyframes flash-red {
-      from { box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
-      to { box-shadow: 0 0 25px rgba(239, 68, 68, 0.7); }
+      from { opacity: 0.7; }
+      to { opacity: 1; }
     }
 
     .led-details {
@@ -344,7 +343,7 @@
 
     .led-name {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text-main);
     }
 
@@ -354,7 +353,7 @@
       margin-top: 2px;
     }
 
-    /* Actions Panel Button Grid */
+    /* Pill-Shaped Active Buttons (Squishy Interaction) */
     .actions-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -362,42 +361,43 @@
     }
 
     .btn-action {
-      border: 1px solid var(--outline);
+      border: 2px solid var(--outline-variant);
       background: var(--surface);
       padding: 16px;
-      border-radius: 20px;
-      font-size: 14px;
+      border-radius: 999px; /* Absolute Pill Shape Spec */
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      box-shadow: var(--shadow-soft);
-      transition: all 0.2s ease;
+      gap: 6px;
+      box-shadow: var(--shadow-ambient);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       font-family: var(--font-ui);
+      position: relative;
+      top: 0;
     }
 
     .btn-action:hover {
-      border-color: var(--primary-light);
-      background: var(--bg-color);
-      transform: translateY(-1px);
+      border-color: var(--primary);
+      background: var(--surface-container-low);
     }
 
     .btn-action:active {
-      transform: scale(0.97);
-      background: var(--surface-dim);
+      top: 2px; /* Physical Click Simulation */
       box-shadow: none;
+      background: var(--surface-container);
     }
 
     .btn-action i {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--primary);
     }
 
     .btn-action.btn-danger-action {
-      border-color: rgba(239, 68, 68, 0.15);
+      border-color: var(--tertiary-container);
     }
     .btn-action.btn-danger-action i {
       color: var(--color-red);
@@ -407,12 +407,12 @@
     .terminal-container {
       display: flex;
       flex-direction: column;
-      height: 250px;
-      background: var(--text-main); /* Dark Indigo */
+      height: 240px;
+      background: var(--text-main); 
       border-radius: 24px;
       padding: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
-      box-shadow: var(--shadow-medium);
+      border: 2px solid var(--outline-variant);
+      box-shadow: var(--shadow-ambient);
     }
 
     .terminal-header {
@@ -421,11 +421,10 @@
       align-items: center;
       font-size: 11px;
       font-weight: 700;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255, 255, 255, 0.4);
       margin-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding-bottom: 8px;
-      letter-spacing: 0.5px;
     }
 
     .terminal-log {
@@ -445,7 +444,7 @@
     }
 
     .log-time {
-      color: rgba(255,255,255,0.3);
+      color: rgba(255, 255, 255, 0.3);
       font-size: 9px;
       margin-right: 6px;
     }
@@ -455,22 +454,22 @@
       margin-right: 4px;
     }
 
-    .log-direction.tx { color: var(--primary-light); }
-    .log-direction.rx { color: var(--color-green); }
-    .log-direction.sys { color: #818cf8; }
+    .log-direction.tx { color: var(--primary-container); }
+    .log-direction.rx { color: var(--color-yellow); }
+    .log-direction.sys { color: #6dfe9c; }
 
     .log-msg {
-      color: #e0e7ff;
+      color: #f8f9fa;
     }
 
-    /* Navigation Bottom Tab Bar */
+    /* Glassmorphism Navigation Bottom Tab Bar */
     .tab-bar-container {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       padding: 16px 24px 24px;
-      background: linear-gradient(to top, var(--bg-color) 85%, transparent);
+      background: linear-gradient(to top, var(--bg-color) 80%, transparent);
       z-index: 10;
     }
 
@@ -478,13 +477,13 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 999px; /* Pill Shape */
       padding: 6px;
-      box-shadow: var(--shadow-medium);
-      border: 1px solid var(--outline);
+      box-shadow: var(--shadow-ambient);
+      border: 2px solid var(--outline-variant);
     }
 
     .tab-item {
@@ -496,7 +495,7 @@
       align-items: center;
       gap: 4px;
       padding: 12px 24px;
-      border-radius: 18px;
+      border-radius: 999px; /* Pill shape */
       cursor: pointer;
       color: var(--text-muted);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -505,7 +504,6 @@
 
     .tab-item i {
       font-size: 18px;
-      transition: transform 0.3s ease;
     }
 
     .tab-item span {
@@ -515,11 +513,11 @@
 
     .tab-item.active {
       color: var(--primary);
-      background: var(--bg-color);
+      background: var(--surface-container-low);
     }
 
     .tab-item.active i {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     /* Setup Connection Overlay screen */
@@ -529,9 +527,9 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(253, 248, 240, 0.96);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(248, 249, 250, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 100;
       display: flex;
       flex-direction: column;
@@ -547,8 +545,8 @@
       height: 100px;
       border-radius: 50%;
       background: var(--surface);
-      border: 1px solid var(--outline);
-      box-shadow: var(--shadow-medium);
+      border: 2px solid var(--outline-variant);
+      box-shadow: var(--shadow-ambient);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -563,7 +561,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 3px solid var(--primary-light);
+      border: 3px solid var(--primary-container);
       opacity: 0.15;
       animation: ripple 2s infinite ease-out;
     }
@@ -575,8 +573,8 @@
 
     .overlay-title {
       font-size: 28px;
-      font-weight: 800;
-      color: var(--indigo);
+      font-weight: 700;
+      color: var(--primary);
       margin-bottom: 8px;
     }
 
@@ -593,7 +591,7 @@
       height: 170px;
       border-radius: 50%;
       font-size: 18px;
-      font-weight: 800;
+      font-weight: 700;
       color: #ffffff;
       background: var(--primary);
       display: flex;
@@ -601,16 +599,23 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 10px 30px rgba(217, 119, 6, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 109, 54, 0.25);
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      top: 0;
     }
 
     .connect-btn:hover {
-      background: var(--primary-light);
-      box-shadow: 0 12px 35px rgba(217, 119, 6, 0.4);
+      background: #005429;
+      box-shadow: 0 12px 30px rgba(0, 109, 54, 0.35);
       transform: scale(1.02);
+    }
+
+    .connect-btn:active {
+      top: 3px;
+      box-shadow: none;
     }
 
     .connect-btn i {
@@ -618,7 +623,7 @@
     }
 
     #overlay-error-msg {
-      color: var(--color-red);
+      color: var(--tertiary);
       font-size: 12px;
       margin-top: 20px;
       font-weight: 700;
@@ -650,27 +655,26 @@
 
     .setting-input {
       width: 100%;
-      border: 1px solid var(--outline);
+      border: 2px solid var(--outline-variant);
       outline: none;
       padding: 10px 14px;
-      border-radius: 12px;
+      border-radius: 999px; /* Pill Shape */
       font-family: var(--font-mono);
       font-size: 13px;
       background: var(--surface);
       color: var(--text-main);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-ambient);
     }
 
     .setting-input:focus {
       border-color: var(--primary);
     }
 
-    /* Info guide at bottom of overlay */
     .compat-guide {
       margin-top: 36px;
-      background: rgba(49, 46, 129, 0.03);
+      background: var(--surface-container-low);
       padding: 16px;
-      border-radius: 18px;
+      border-radius: 20px;
       width: 100%;
       max-width: 320px;
       font-size: 11px;
@@ -680,7 +684,7 @@
     }
     .compat-guide strong {
       display: block;
-      color: var(--indigo);
+      color: var(--primary);
       margin-bottom: 6px;
     }
     .compat-guide ul {
@@ -698,7 +702,7 @@
         <div class="overlay-logo-ring"></div>
         <i class="fa-solid fa-clock-rotate-left"></i>
       </div>
-      <h1 class="overlay-title">건강한 화장실 생활</h1>
+      <h1 class="overlay-title">Bathroom Health</h1>
       <p class="overlay-desc">화장실에서의 건강한 시간을 지켜주는<br>스마트 BLE 타이머 대시보드입니다.</p>
       
       <button class="connect-btn" id="btn-overlay-connect">
@@ -739,7 +743,7 @@
     <!-- Main Content Area -->
     <div class="content-area">
       
-      <!-- TAB 1: TIMER & LIGHTS (Active by default) -->
+      <!-- TAB 1: TIMER & LIGHTS -->
       <div class="tab-content" id="tab-timer" style="display: flex; flex-direction: column; gap: 20px;">
         
         <!-- Timer Monitor Card -->
@@ -799,7 +803,7 @@
         <div class="terminal-container">
           <div class="terminal-header">
             <span>COMMUNICATION TERMINAL</span>
-            <span id="btn-clear-logs" style="cursor:pointer; color: var(--primary-light);"><i class="fa-solid fa-trash-can"></i> 비우기</span>
+            <span id="btn-clear-logs" style="cursor:pointer; color: var(--primary-container);"><i class="fa-solid fa-trash-can"></i> 비우기</span>
           </div>
           <div class="terminal-log" id="terminal-log">
             <div class="log-item">
@@ -1059,14 +1063,14 @@
     }
 
     function pulseTimerDisplay() {
-      timerTime.style.transform = 'scale(1.2)';
+      timerTime.style.transform = 'scale(1.15)';
       timerTime.style.color = 'var(--color-red)';
       timerTime.style.transition = 'none';
       setTimeout(() => {
-        timerTime.style.transition = 'all 0.4s ease';
+        timerTime.style.transition = 'all 0.3s ease';
         timerTime.style.transform = 'scale(1)';
         timerTime.style.color = 'var(--text-main)';
-      }, 200);
+      }, 150);
     }
 
     // Terminal Logger
