@@ -229,21 +229,19 @@
       padding: 0 10px;
     }
 
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    /* Stats Single Card Styling */
+    .single-stat-container {
+      width: 100%;
       margin-bottom: 24px;
     }
 
     .stat-card {
       background: #edeeef;
       border-radius: 20px;
-      padding: 14px 16px;
+      padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       border: 1px solid var(--outline-variant);
     }
 
@@ -685,7 +683,7 @@
     <!-- ==========================================
          SCREEN 1: READY VIEW (대기 화면)
          ========================================== -->
-    <div class="screen-view" id="screen-ready">
+    <div class="screen-view" id="screen-ready" style="justify-content: space-between;">
       
       <!-- Big Square Character Card -->
       <div class="ready-image-card">
@@ -693,54 +691,48 @@
         <img id="ready-char-img" src="https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V" alt="Toilet Buddy">
       </div>
 
-      <!-- Welcome Texts -->
-      <div class="ready-texts">
-        <h2 class="ready-title">Ready for a healthy session?</h2>
-        <p class="ready-desc">Track your time to maintain a happy, healthy routine. Your little buddy is ready when you are!</p>
+      <!-- Welcome Texts (한글 단일 문구로 단순화) -->
+      <div class="ready-texts" style="margin: 16px 0;">
+        <h2 class="ready-title" style="font-size: 22px;">건강한 화장실 생활을 시작합시다!</h2>
       </div>
 
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-header"><i class="fa-regular fa-clock time-icon"></i> Last Session</span>
-          <span class="stat-value" id="ready-last-time">4:20</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-header"><i class="fa-solid fa-award streak-icon"></i> Daily Streak</span>
-          <span class="stat-value">5 Days</span>
+      <!-- Stats (Last Session 단일 카드로 축소 및 중앙 대칭 배치) -->
+      <div class="single-stat-container">
+        <div class="stat-card" style="align-items: center; justify-content: center;">
+          <span class="stat-header" style="justify-content: center; font-size: 11px;"><i class="fa-regular fa-clock time-icon"></i> Last Session</span>
+          <span class="stat-value" id="ready-last-time" style="font-size: 24px;">4:20</span>
         </div>
       </div>
 
-      <!-- Start Button & Caption -->
-      <div>
+      <!-- Start Button (불필요 캡션 삭제) -->
+      <div style="margin-bottom: 8px;">
         <button class="btn-pill-primary" id="btn-start-timer">
           <i class="fa-solid fa-play"></i>
           <span>START TIMER</span>
         </button>
-        <p class="btn-sub-caption">Recommended: Under 5 minutes</p>
       </div>
 
     </div>
 
     <!-- ==========================================
-         SCREEN 2: ACTIVE VIEW (타이머 동작 화면)
+         SCREEN 2: ACTIVE VIEW (타이머 동작 화면 - 종료 버튼 삭제 및 완전 정대칭 구현)
          ========================================== -->
-    <div class="screen-view" id="screen-active">
+    <div class="screen-view" id="screen-active" style="justify-content: center; align-items: center; gap: 32px; padding: 40px 24px;">
       
       <div style="width: 100%;">
-        <!-- 심플 단일 건강 알림 문구 (Stitch Text clean up) -->
-        <p class="active-status-desc" style="font-weight: 700; color: var(--text-main); font-size: 14px; margin-top: 10px; margin-bottom: 12px; text-align: center;">
+        <!-- 심플 단일 건강 알림 문구 (Cleaned) -->
+        <p class="active-status-desc" style="font-weight: 700; color: var(--text-main); font-size: 15px; margin-bottom: 16px; text-align: center;">
           ⚠️ 화장실에 오래 앉아있을수록 건강에 좋지 않습니다.
         </p>
         
         <!-- Top linear progress bar -->
-        <div class="top-progress-bar-container" style="margin-bottom: 16px;">
+        <div class="top-progress-bar-container" style="margin-bottom: 0;">
           <div class="top-progress-fill" id="top-progress-fill"></div>
         </div>
       </div>
 
-      <!-- Large Character Panel (Removed Circle Ring) -->
-      <div class="timer-ring-outer" style="margin-bottom: 16px;">
+      <!-- Large Character Panel -->
+      <div class="timer-ring-outer" style="margin-bottom: 0;">
         <div class="active-timer-content">
           <div class="active-image-inner">
             <img id="active-char-img" src="https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V" alt="Active Buddy">
@@ -748,23 +740,15 @@
         </div>
       </div>
 
-      <div style="text-align: center; margin-bottom: 20px;">
-        <span class="active-time-display" id="active-time">00:00</span>
-        <p class="active-time-label">Minutes Active</p>
+      <!-- Timer Counter -->
+      <div style="text-align: center;">
+        <span class="active-time-display" id="active-time" style="font-size: 44px;">00:00</span>
+        <p class="active-time-label" style="font-size: 11px; margin-top: 6px;">Minutes Active</p>
       </div>
 
       <!-- Overtime Danger Warning Banner (화면 밑에서 깜빡이는 경고) -->
-      <div id="warning-banner" style="margin-top: 0; margin-bottom: 16px; width: 100%;">
+      <div id="warning-banner" style="margin-top: 0; width: 100%;">
         ⚠️ 화장실에 오래 앉아있으면 건강에 위험합니다!
-      </div>
-
-      <!-- Finish Button -->
-      <div style="width: 100%; margin-top: auto;">
-        <button class="btn-pill-primary" id="btn-finish-timer" style="background-color: var(--primary);">
-          <i class="fa-regular fa-circle-stop"></i>
-          <span>Finish Session</span>
-        </button>
-        <p class="btn-sub-caption">Press once your mission is accomplished</p>
       </div>
 
     </div>
@@ -1106,7 +1090,6 @@
     // 헤더 상태 배지는 단순 표시용으로 변경하여 클릭 이벤트 제거
 
     document.getElementById('btn-start-timer').addEventListener('click', () => sendCommand('1'));
-    document.getElementById('btn-finish-timer').addEventListener('click', () => sendCommand('1'));
     document.getElementById('btn-reset-timer').addEventListener('click', () => sendCommand('2'));
     document.getElementById('btn-mute-buzzer').addEventListener('click', () => sendCommand('3'));
 
