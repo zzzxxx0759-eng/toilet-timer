@@ -640,8 +640,8 @@
     
     <!-- BLE Connection Overlay Screen -->
     <div class="overlay" id="connection-overlay">
-      <!-- 캐릭터 이미지를 활용한 미니멀 디자인 (중복 제거 완료) -->
-      <img src="https://lh3.googleusercontent.com/aida/AP1WRLu6kiE1aMqJ57KYBhCIX-JQkKxFJUJERiQQk5SFqqhnzpzFv42kIwgia3nxpyRSlI_m3OjOWjSq_j1pZJOtY9YJEHwQc04dLfy1oGeJHap79D4mjQgVrK_YLEImWX9WYPjHOTiwqqwKoBvktrD0bTx5aD_OXNPZyHsqOlQ7uMqPvqqo_FQM1ptF-YFvNpTncQ8qtEVMjM8WnCs0jYGFfFG4GmFdizFYw8F67EDmKNx9wKllLeF48-gaXAE0" alt="Ready Buddy" style="width: 140px; height: 140px; object-fit: contain; margin-bottom: 20px; animation: floatImg 3.5s ease-in-out infinite;">
+      <!-- 캐릭터 단독 일러스트 이미지로 교체 (지저분한 화면 캡처 요소 제거) -->
+      <img src="https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V" alt="Ready Buddy" style="width: 160px; height: 160px; object-fit: contain; border-radius: 24px; margin-bottom: 24px; animation: floatImg 3.5s ease-in-out infinite;">
       
       <h1 class="overlay-title">Flush Flow</h1>
       <p class="overlay-desc">화장실에서의 건강을 지켜주는 스마트 BLE 타이머.<br>기기를 찾아 연결을 시작해 보세요.</p>
@@ -692,8 +692,8 @@
       
       <!-- Big Square Character Card -->
       <div class="ready-image-card">
-        <!-- Default Green character smiling -->
-        <img id="ready-char-img" src="https://lh3.googleusercontent.com/aida/AP1WRLu6kiE1aMqJ57KYBhCIX-JQkKxFJUJERiQQk5SFqqhnzpzFv42kIwgia3nxpyRSlI_m3OjOWjSq_j1pZJOtY9YJEHwQc04dLfy1oGeJHap79D4mjQgVrK_YLEImWX9WYPjHOTiwqqwKoBvktrD0bTx5aD_OXNPZyHsqOlQ7uMqPvqqo_FQM1ptF-YFvNpTncQ8qtEVMjM8WnCs0jYGFfFG4GmFdizFYw8F67EDmKNx9wKllLeF48-gaXAE0" alt="Toilet Buddy">
+        <!-- Default Green character smiling (화면 캡처가 아닌 순수 일러스트) -->
+        <img id="ready-char-img" src="https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V" alt="Toilet Buddy">
       </div>
 
       <!-- Welcome Texts -->
@@ -814,7 +814,7 @@
 
     // HTML Images Map from Stitch
     const CHAR_URLS = {
-      READY: 'https://lh3.googleusercontent.com/aida/AP1WRLu6kiE1aMqJ57KYBhCIX-JQkKxFJUJERiQQk5SFqqhnzpzFv42kIwgia3nxpyRSlI_m3OjOWjSq_j1pZJOtY9YJEHwQc04dLfy1oGeJHap79D4mjQgVrK_YLEImWX9WYPjHOTiwqqwKoBvktrD0bTx5aD_OXNPZyHsqOlQ7uMqPvqqo_FQM1ptF-YFvNpTncQ8qtEVMjM8WnCs0jYGFfFG4GmFdizFYw8F67EDmKNx9wKllLeF48-gaXAE0',
+      READY: 'https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V',
       GREEN: 'https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V',
       YELLOW: 'https://lh3.googleusercontent.com/aida/AP1WRLvHz7iLequpi5XEYuN9yIwnlm8VfI13CRcNlNW7alf1DYwED3bkRWzAoUDc-CIhTaklQZo0lK84nTeFc8QM9uqjMHupWmjJ50MQ4GofxxE6ELzyAyNx1uwyJeM_px_v0Mxjm1eUDvlI5D5reBmDHt1lHDaIiZFDDrXRZa4NT1UEVp_GG4id93ISCGPdSPUnygEdvqBHrDE7VioD3qlYRjvyrjPrAOCkoZghyED2zutqp-GlvbXwMgpeRosE',
       RED: 'https://lh3.googleusercontent.com/aida/AP1WRLvzndCdHSlUP1uF4SIq7-qXMxKCOVfe0V6k8v9ravniFckXtlWcRLOu4XBueBGhNuU8lNp6U_XMswgl1M0SepDfyYS7--zeMdT2JARgmvgcHOcvZ_ss9rrQR81q0x83tBIpDXIfAYSfkkrQXxG2dZizDdgzNRbF7SiRSw5dJBV8cnfobx7px00-TiQMGljOVzmL6mfxNajIB-QPRlsfFdnZyf-HiGn5lqeloxV90fjz_ZgBUhJgQdfTyD4',
