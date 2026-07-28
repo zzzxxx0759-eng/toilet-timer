@@ -302,70 +302,102 @@
       text-align: center;
     }
 
-    /* Circular Progress Timer */
-    .active-timer-ring {
+    .timer-ring-outer {
       position: relative;
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      background: var(--surface);
-      border: 2px solid var(--surface-container);
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1;
+      border-radius: 24px;
+      background: #a5f3fc; /* Light Blue Spec */
       display: flex;
       justify-content: center;
       align-items: center;
       box-shadow: var(--shadow-ambient);
-    }
-
-    .active-timer-ring::after {
-      content: '';
-      position: absolute;
-      width: 216px;
-      height: 216px;
-      border-radius: 50%;
-      background: var(--bg-color);
-      border: 1px solid var(--outline-variant);
-      z-index: 1;
-    }
-
-    .active-progress-arc {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: conic-gradient(var(--active-theme-color) var(--timer-angle, 0deg), transparent var(--timer-angle, 0deg));
-      mask: radial-gradient(transparent 107px, #000 108px);
-      -webkit-mask: radial-gradient(transparent 107px, #000 108px);
-      z-index: 2;
-      transform: rotate(-90deg);
-      transition: background 0.4s ease, transform 0.1s linear;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
     .active-timer-content {
+      width: 100%;
+      height: 100%;
       position: relative;
-      z-index: 3;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
     }
 
     .active-image-inner {
-      width: 110px;
-      height: 110px;
-      border-radius: 16px;
-      background-color: #a5f3fc;
-      overflow: hidden;
+      width: 80%;
+      height: 80%;
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 1px solid rgba(0,0,0,0.05);
-      margin-bottom: 12px;
       animation: floatImg 3s ease-in-out infinite;
     }
 
     .active-image-inner img {
-      width: 80%;
-      height: 80%;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
+    }
+
+    /* Top progress bar replacement for circle */
+    .top-progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: var(--surface-container);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .top-progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--active-theme-color);
+      transition: width 0.1s linear, background-color 0.4s ease;
+    }
+
+    /* Lockout Screen Overlay Style */
+    .lockout-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #0f172a; /* Dark Blue Slate */
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 24px;
+      text-align: center;
+    }
+
+    .lockout-image-card {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      margin-bottom: 30px;
+      border: 2px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .lockout-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .lockout-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 36px;
     }
 
     .active-time-display {
@@ -567,9 +599,35 @@
         <i class="fa-brands fa-bluetooth-b"></i>
         <span>기기 연결</span>
       </button>
+    <!-- BLE Connection Overlay Screen -->
+    <div class="overlay" id="connection-overlay">
+      <div class="overlay-logo">
+        <div class="overlay-logo-ring"></div>
+        <i class="fa-solid fa-clock-rotate-left"></i>
+      </div>
+      <h1 class="overlay-title">Flush Flow</h1>
+      <p class="overlay-desc">화장실에서의 건강 지키미 타이머<br>블루투스(ESP_KJ)에 연결해 주세요.</p>
+      
+      <button class="connect-btn" id="btn-overlay-connect">
+        <i class="fa-brands fa-bluetooth-b"></i>
+        <span>기기 연결</span>
+      </button>
       <div id="overlay-error-msg"></div>
  
       <input type="text" class="setting-input" id="input-device-prefix" value="ESP_KJ" placeholder="기기 필터">
+    </div>
+
+    <!-- Lockout Screen Overlay (Stitch Lock Screen Spec) -->
+    <div class="lockout-overlay" id="lockout-overlay">
+      <!-- Stitch Dark Mode Lock Screen Image asset -->
+      <img class="lockout-image-card" src="https://lh3.googleusercontent.com/aida/AP1WRLthUWyGepxYZ9RQCewS7nYsQaRZizLy6Ar2g2B5kzfuVg0aZIbgjDTP_3mhbNmz_QfBvnqKyFNBnoNd_k9FiEe0nsXcalPGPFOJ8-FAxBDqgCx2DrLVEwUUD6pqs-T3CUoQ10W9FEYJ9asSveETUCi1l8MbnRDLwohDzgiRZxmWhbh6SRuhYgX5_M7H_aszmhLJ72R7_ZdegNUQ5I96JlLp_txZ9XuG96AssjgT1XshGPAUmvJS31ugy1M" alt="Lock screen">
+      <h2 class="lockout-title">HEALTH LIMIT EXCEEDED</h2>
+      <p class="lockout-desc">화장실 이용 제한 시간(6분)이 초과되어<br>스마트폰 화면이 잠겼습니다. 밖으로 이동해 주세요!</p>
+      
+      <button class="btn-squishy" id="btn-unlock-device" style="background: var(--color-danger); border-color: var(--color-danger); color: #ffffff; width: 100%; max-width: 280px; box-shadow: 0 6px 15px rgba(239,68,68,0.25);">
+        <i class="fa-solid fa-lock-open" style="color: #ffffff;"></i>
+        <span>잠금 해제 (타이머 리셋)</span>
+      </button>
     </div>
   
     <!-- Header Section -->
@@ -631,27 +689,31 @@
          ========================================== -->
     <div class="screen-view" id="screen-active">
       
-      <div>
+      <div style="width: 100%;">
         <!-- Dynamic Phase Badge -->
         <div class="active-status-bar" id="active-phase-badge">
           <span>● PHASE 1: SMOOTH FLOW</span>
         </div>
         <p class="active-status-desc" id="active-phase-desc">Everything is flowing well.</p>
+        
+        <!-- Top linear progress bar -->
+        <div class="top-progress-bar-container">
+          <div class="top-progress-fill" id="top-progress-fill"></div>
+        </div>
       </div>
 
-      <!-- Circular Timer and Inner Character -->
-      <div class="active-timer-ring">
-        <div class="active-progress-arc" id="active-progress-arc"></div>
+      <!-- Large Character Panel (Removed Circle Ring) -->
+      <div class="timer-ring-outer">
         <div class="active-timer-content">
-          
-          <!-- Inner Square Character Card -->
           <div class="active-image-inner">
             <img id="active-char-img" src="https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V" alt="Active Buddy">
           </div>
-          
-          <span class="active-time-display" id="active-time">00:00</span>
-          <span class="active-time-label">Minutes Active</span>
         </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 16px;">
+        <span class="active-time-display" id="active-time">00:00</span>
+        <p class="active-time-label">Minutes Active</p>
       </div>
 
       <!-- Overtime Danger Warning Banner -->
@@ -720,6 +782,7 @@
 
     // DOM References
     const connectionOverlay = document.getElementById('connection-overlay');
+    const lockoutOverlay = document.getElementById('lockout-overlay');
     const inputDevicePrefix = document.getElementById('input-device-prefix');
     const btnOverlayConnect = document.getElementById('btn-overlay-connect');
     const btnHeaderConnect = document.getElementById('btn-header-connect');
@@ -731,7 +794,7 @@
     const screenActive = document.getElementById('screen-active');
 
     // Active Timer elements
-    const activeProgressArc = document.getElementById('active-progress-arc');
+    const topProgressFill = document.getElementById('top-progress-fill');
     const activeTime = document.getElementById('active-time');
     const activePhaseBadge = document.getElementById('active-phase-badge');
     const activePhaseDesc = document.getElementById('active-phase-desc');
@@ -821,10 +884,11 @@
       // Reset layout views
       screenActive.style.display = 'none';
       screenReady.style.display = 'flex';
+      lockoutOverlay.style.display = 'none';
       
       // Reset values
       activeTime.innerText = '00:00';
-      activeProgressArc.style.setProperty('--timer-angle', '0deg');
+      topProgressFill.style.width = '0%';
       warningBanner.style.display = 'none';
       
       resetToDefaultTheme();
@@ -886,15 +950,22 @@
           const s = parseInt(parts[1], 10);
           const totalSecs = (m * 60) + s;
           const maxSecs = 360; // 6 mins limit
-          const angle = Math.min(360, (totalSecs / maxSecs) * 360);
-          activeProgressArc.style.setProperty('--timer-angle', `${angle}deg`);
+          const progressPercent = Math.min(100, (totalSecs / maxSecs) * 100);
+          topProgressFill.style.width = `${progressPercent}%`;
           
           // Overtime Threshold warning trigger (40 seconds for test mode)
           if (totalSecs >= 40) {
             warningBanner.style.display = 'block';
             activeCharImg.src = CHAR_URLS.COLLAPSED; // 기절 캐릭터 이미지
+            
+            // Force Lockout overlay screen (lock phone simulator)
+            lockoutOverlay.style.display = 'flex';
+            
+            // Turn off lights globally on UI
+            updateThemeStyle('#000000', 'rgba(0,0,0,0)');
           } else {
             warningBanner.style.display = 'none';
+            lockoutOverlay.style.display = 'none';
           }
         }
       }
@@ -903,12 +974,14 @@
         if (status === 'RUNNING') {
           screenReady.style.display = 'none';
           screenActive.style.display = 'flex';
+          lockoutOverlay.style.display = 'none';
         } else {
           // If stopped, update last session time and return to ready screen
           readyLastTime.innerText = activeTime.innerText;
           screenActive.style.display = 'none';
           screenReady.style.display = 'flex';
           warningBanner.style.display = 'none';
+          lockoutOverlay.style.display = 'none';
           resetToDefaultTheme();
         }
       }
@@ -1031,6 +1104,10 @@
     document.getElementById('btn-start-timer').addEventListener('click', () => sendCommand('1'));
     document.getElementById('btn-finish-timer').addEventListener('click', () => sendCommand('1'));
     document.getElementById('btn-reset-timer').addEventListener('click', () => sendCommand('2'));
+    document.getElementById('btn-unlock-device').addEventListener('click', () => {
+      sendCommand('2'); // Send Reset command to ESP32 to unlock
+      lockoutOverlay.style.display = 'none';
+    });
     document.getElementById('btn-mute-buzzer').addEventListener('click', () => sendCommand('3'));
 
     document.getElementById('btn-clear-logs').addEventListener('click', () => {
