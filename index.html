@@ -2,8 +2,16 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Flush Flow - 화장실 건강 지키미</title>
+  
+  <!-- iOS Web App Specs (아이폰 홈 화면 추가 시 진짜 앱처럼 주소창 완전히 숨김) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Flush Flow">
+  
+  <!-- 아이폰 홈 화면 생성 시 나타날 캐릭터 앱 아이콘 -->
+  <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V">
   
   <!-- Google Fonts: Quicksand & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -838,15 +846,12 @@
     // Connect to Bluetooth BLE Device
     async function connectBLE() {
       document.getElementById('overlay-error-msg').innerText = '';
-      const nameFilter = inputDevicePrefix.value.trim() || 'ESP_';
       updateStatus('스캔 중...', 'connecting');
       
       try {
-        logTerminal('SYS', `기기명 필터 '${nameFilter}'(으)로 블루투스 기기 스캔 중...`);
+        logTerminal('SYS', '주변 블루투스 기기 스캔 중...');
         bluetoothDevice = await navigator.bluetooth.requestDevice({
-          filters: [
-            { namePrefix: nameFilter }
-          ],
+          acceptAllDevices: true,
           optionalServices: [NUS_SERVICE_UUID]
         });
 
