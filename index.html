@@ -3,51 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>건강한 화장실 생활 대시보드</title>
+  <title>Flush Flow - 화장실 건강 지키미</title>
   
-  <!-- Google Fonts: Quicksand (Stitch Spec) & JetBrains Mono -->
+  <!-- Google Fonts: Quicksand (Stitch rounded spec) & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
-      /* Stitch Design System - Bathroom Health Timer Palette */
-      --bg-color: #f8f9fa;             /* Flat Neutral Background */
+      /* Stitch Soft Minimalism Spec */
+      --bg-color: #f8f9fa;             /* Bright Neutral Base */
       --surface: #ffffff;
-      --surface-dim: #d9dadb;
       --surface-container: #edeeef;
       --surface-container-low: #f3f4f5;
-      
-      --primary: #006d36;              /* Fresh Green */
-      --primary-container: #4ade80;
-      --on-primary-container: #005e2d;
-      
-      --secondary: #735c00;            /* Warning Yellow */
-      --secondary-container: #fed01b;
-      
-      --tertiary: #a83639;             /* Alert Red */
-      --tertiary-container: #ffb0ad;
       
       --text-main: #191c1d;            
       --text-muted: #3d4a3e;           
       --outline: #6d7b6d;
       --outline-variant: #bccabb;
       
-      /* Status Colors */
+      /* Dynamic Alert States */
+      --color-safe: #4ade80;           /* Green */
+      --color-warn: #fed01b;           /* Yellow */
+      --color-danger: #ef4444;         /* Red */
       --color-off: #cbd5e1;
-      --color-green: #4ade80;
-      --color-yellow: #fed01b;
-      --color-red: #a83639;
       
-      /* Soft Ambient Shadows tinted with primary colors */
-      --shadow-ambient: 0 10px 25px rgba(0, 109, 54, 0.08);
-      --shadow-glow-green: 0 0 25px rgba(74, 222, 128, 0.4);
-      --shadow-glow-yellow: 0 0 25px rgba(254, 208, 27, 0.4);
-      --shadow-glow-red: 0 0 25px rgba(168, 54, 57, 0.4);
+      /* Active state dynamic color tracker */
+      --active-theme-color: var(--color-safe);
+      --active-glow-color: rgba(74, 222, 128, 0.25);
+      
+      /* Ambient Shadows */
+      --shadow-ambient: 0 10px 30px rgba(25, 28, 29, 0.05);
       
       --font-ui: 'Quicksand', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -61,67 +51,66 @@
     }
 
     body {
-      background-color: var(--surface-dim);
+      background-color: #d9dadb;
       color: var(--text-main);
       font-family: var(--font-ui);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.4s ease;
     }
 
-    /* Mobile Container Frame - Soft Minimalist */
+    /* Mobile Frame container (Stitch Mobile Spec) */
     .app-container {
       width: 100%;
-      max-width: 480px;
+      max-width: 440px;
       height: 100vh;
       background-color: var(--bg-color);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(25, 28, 29, 0.1);
+      box-shadow: 0 30px 60px rgba(25, 28, 29, 0.12);
       border: 1px solid var(--outline-variant);
+      transition: all 0.4s ease;
     }
 
-    @media (min-width: 481px) {
+    @media (min-width: 441px) {
       .app-container {
-        height: 900px;
+        height: 850px;
         border-radius: 36px;
         border: 10px solid var(--text-main);
       }
     }
 
-    /* Header Section */
+    /* Minimalist Header */
     header {
-      padding: 24px 24px 16px;
+      padding: 24px 24px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
-      background-color: rgba(248, 249, 250, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0, 109, 54, 0.08);
     }
 
-    .brand-title {
-      font-size: 20px;
+    .brand-logo {
+      font-size: 22px;
       font-weight: 700;
-      color: var(--primary);
+      color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .brand-title i {
-      color: var(--primary-container);
+    .brand-logo i {
+      color: var(--active-theme-color);
+      transition: color 0.4s ease;
     }
 
     .status-badge {
-      padding: 8px 18px;
-      border-radius: 999px; /* Pill Shape */
-      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 999px; /* Pill */
+      font-size: 11px;
       font-weight: 700;
       background: var(--surface);
       border: 2px solid var(--outline-variant);
@@ -134,115 +123,76 @@
       transition: all 0.3s ease;
     }
 
-    .status-badge:hover {
-      border-color: var(--primary);
-    }
-
     .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: var(--tertiary);
+      background-color: var(--color-off);
       transition: all 0.3s ease;
     }
 
     .status-badge.connected {
-      background-color: var(--surface-container-low);
-      color: var(--primary);
-      border-color: var(--primary-container);
+      border-color: var(--active-theme-color);
+      box-shadow: 0 0 15px var(--active-glow-color);
     }
 
     .status-badge.connected .status-dot {
-      background-color: var(--primary-container);
-      box-shadow: 0 0 8px var(--primary-container);
-    }
-
-    .status-badge.connecting {
-      background-color: var(--surface-container);
-      color: var(--secondary);
-      border-color: var(--secondary-container);
+      background-color: var(--active-theme-color);
     }
 
     .status-badge.connecting .status-dot {
-      background-color: var(--secondary-container);
+      background-color: var(--color-warn);
       animation: pulse 1s infinite alternate;
     }
 
     @keyframes pulse {
-      from { opacity: 0.4; }
+      from { opacity: 0.3; }
       to { opacity: 1; }
     }
 
-    /* Content Scroll Area */
-    .content-area {
+    /* Main Center Layout */
+    .main-viewport {
       flex: 1;
-      overflow-y: auto;
-      padding: 16px 24px 100px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-    }
-
-    /* Cards - Soft Rounded Containers */
-    .dashboard-card {
-      background: var(--surface);
-      border-radius: 24px; /* 1.5rem spec */
-      padding: 24px;
-      border: 2px solid var(--surface-container);
-      box-shadow: var(--shadow-ambient);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .dashboard-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 6px;
+      padding: 20px 24px 40px;
     }
 
-    .card-title i {
-      color: var(--primary);
-    }
-
-    /* Circular Timer (Stitch specifications) */
-    .timer-gauge-container {
+    /* Circular Timer Section (Fluid Center-Weight Spec) */
+    .timer-center-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 12px 0;
+      justify-content: center;
+      margin-top: auto;
+      margin-bottom: auto;
     }
 
     .timer-ring-outer {
       position: relative;
-      width: 220px;
-      height: 220px;
+      width: 250px;
+      height: 250px;
       border-radius: 50%;
-      background: var(--bg-color);
-      border: 1px solid var(--outline-variant);
+      background: var(--surface);
+      border: 2px solid var(--surface-container);
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: inset 0 6px 12px rgba(25, 28, 29, 0.04);
+      box-shadow: var(--shadow-ambient);
+      transition: border-color 0.4s ease;
     }
 
     .timer-ring-outer::after {
       content: '';
       position: absolute;
-      width: 180px;
-      height: 180px;
+      width: 206px;
+      height: 206px;
       border-radius: 50%;
-      background: var(--surface);
+      background: var(--bg-color);
       border: 1px solid var(--outline-variant);
-      box-shadow: var(--shadow-ambient);
+      z-index: 1;
     }
 
     .timer-progress {
@@ -250,150 +200,110 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: conic-gradient(var(--timer-color, var(--primary)) var(--timer-angle, 0deg), transparent var(--timer-angle, 0deg));
-      mask: radial-gradient(transparent 89px, #000 90px);
-      -webkit-mask: radial-gradient(transparent 89px, #000 90px);
-      z-index: 1;
+      background: conic-gradient(var(--active-theme-color) var(--timer-angle, 0deg), transparent var(--timer-angle, 0deg));
+      mask: radial-gradient(transparent 102px, #000 103px);
+      -webkit-mask: radial-gradient(transparent 102px, #000 103px);
+      z-index: 2;
       transform: rotate(-90deg);
-      transition: background 0.5s ease, transform 0.1s linear;
+      transition: background 0.4s ease, transform 0.1s linear;
     }
 
-    .timer-inner-value {
+    .timer-content {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100%;
-      padding-top: 10px;
     }
 
-    .timer-time-display {
-      font-family: var(--font-mono);
-      font-size: 42px; /* Adjusted size to fit character below */
-      font-weight: 700;
-      color: var(--text-main);
-      letter-spacing: -2px;
-      line-height: 1;
-      margin-top: 4px;
-    }
-
-    /* Character floating animation (Stitch Spec) */
+    /* Character Area - Floating Spec */
     .character-container {
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 90px;
       margin-bottom: 2px;
-      height: 70px;
-      animation: float 3s ease-in-out infinite;
+      animation: floatCharacter 3.2s ease-in-out infinite;
     }
 
-    @keyframes float {
+    .character-svg {
+      transition: all 0.4s ease;
+    }
+
+    @keyframes floatCharacter {
       0% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
+      50% { transform: translateY(-7px); }
       100% { transform: translateY(0px); }
     }
 
+    .timer-time-display {
+      font-family: var(--font-mono);
+      font-size: 46px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -2px;
+      line-height: 1.1;
+    }
+
     .timer-status-text {
-      margin-top: 6px;
       font-size: 13px;
       font-weight: 700;
       color: var(--text-muted);
       letter-spacing: 0.05em;
+      margin-top: 4px;
     }
 
-    /* LED Status Card */
-    .led-status-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Warning Message Banner */
+    #warning-banner {
+      display: none;
+      color: #ffffff;
+      background-color: var(--color-danger);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 999px; /* Pill */
+      margin-top: 24px;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: blinkWarning 0.8s infinite alternate;
     }
 
-    .led-info {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    @keyframes blinkWarning {
+      0% { opacity: 0.85; transform: scale(0.97); }
+      100% { opacity: 1; transform: scale(1.03); }
     }
 
-    .led-bulb-wrapper {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%; /* Perfect Circle Spec */
-      background: var(--surface-container);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 26px;
-      color: var(--outline);
-      transition: all 0.4s ease;
-      border: 2px solid var(--outline-variant);
-    }
-
-    .led-bulb-wrapper.active-green {
-      background: #e6f7ed;
-      color: var(--color-green);
-      box-shadow: var(--shadow-glow-green);
-      border-color: var(--primary-container);
-    }
-
-    .led-bulb-wrapper.active-yellow {
-      background: #fffbeb;
-      color: var(--color-yellow);
-      box-shadow: var(--shadow-glow-yellow);
-      border-color: var(--secondary-container);
-    }
-
-    .led-bulb-wrapper.active-red {
-      background: #fdf2f2;
-      color: var(--color-red);
-      box-shadow: var(--shadow-glow-red);
-      border-color: var(--tertiary-container);
-      animation: flash-red 0.8s infinite alternate;
-    }
-
-    @keyframes flash-red {
-      from { opacity: 0.7; }
-      to { opacity: 1; }
-    }
-
-    .led-details {
+    /* Squishy Pill Buttons Bottom Bar */
+    .bottom-controls {
+      width: 100%;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+      z-index: 10;
     }
 
-    .led-name {
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--text-main);
-    }
-
-    .led-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* Pill-Shaped Active Buttons (Squishy Interaction) */
-    .actions-grid {
+    .btn-pill-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
 
-    .btn-action {
+    .btn-squishy {
       border: 2px solid var(--outline-variant);
       background: var(--surface);
-      padding: 16px;
-      border-radius: 999px; /* Absolute Pill Shape Spec */
-      font-size: 13px;
+      padding: 18px 24px;
+      border-radius: 999px; /* Pill shape */
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-main);
       cursor: pointer;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       box-shadow: var(--shadow-ambient);
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       font-family: var(--font-ui);
@@ -401,156 +311,118 @@
       top: 0;
     }
 
-    .btn-action:hover {
-      border-color: var(--primary);
+    .btn-squishy:hover {
+      border-color: var(--active-theme-color);
       background: var(--surface-container-low);
+      box-shadow: 0 8px 20px rgba(0, 109, 54, 0.04);
     }
 
-    .btn-action:active {
-      top: 2px; /* Physical Click Simulation */
+    .btn-squishy:active {
+      top: 2.5px;
       box-shadow: none;
       background: var(--surface-container);
     }
 
-    .btn-action i {
-      font-size: 18px;
-      color: var(--primary);
+    .btn-squishy i {
+      font-size: 16px;
+      color: var(--active-theme-color);
+      transition: color 0.4s ease;
     }
 
-    .btn-action.btn-danger-action {
-      border-color: var(--tertiary-container);
+    .btn-squishy-danger {
+      grid-column: span 2;
+      border-color: var(--outline-variant);
     }
-    .btn-action.btn-danger-action i {
-      color: var(--color-red);
+    .btn-squishy-danger i {
+      color: var(--color-danger);
     }
 
-    /* Terminal Console */
-    .terminal-container {
+    /* Minimalist Floating Logs Console */
+    .log-toggle-container {
+      width: 100%;
+    }
+
+    .btn-toggle-logs {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0 auto;
       display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      transition: color 0.2s;
+    }
+
+    .btn-toggle-logs:hover {
+      color: var(--text-main);
+    }
+
+    .terminal-panel {
+      display: none;
+      height: 180px;
+      background: var(--text-main);
+      border-radius: 20px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.05);
       flex-direction: column;
-      height: 240px;
-      background: var(--text-main); 
-      border-radius: 24px;
-      padding: 16px;
-      border: 2px solid var(--outline-variant);
-      box-shadow: var(--shadow-ambient);
+      margin-top: 10px;
     }
 
     .terminal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      color: rgba(255, 255, 255, 0.4);
-      margin-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 8px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 6px;
     }
 
     .terminal-log {
       flex: 1;
       overflow-y: auto;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding-right: 4px;
+      gap: 4px;
     }
 
     .log-item {
       line-height: 1.4;
       word-break: break-all;
+      color: #e0e7ff;
     }
 
     .log-time {
-      color: rgba(255, 255, 255, 0.3);
-      font-size: 9px;
-      margin-right: 6px;
+      color: rgba(255,255,255,0.3);
+      margin-right: 4px;
     }
 
     .log-direction {
       font-weight: 700;
       margin-right: 4px;
     }
+    .log-direction.tx { color: var(--color-safe); }
+    .log-direction.rx { color: var(--color-warn); }
+    .log-direction.sys { color: #818cf8; }
 
-    .log-direction.tx { color: var(--primary-container); }
-    .log-direction.rx { color: var(--color-yellow); }
-    .log-direction.sys { color: #6dfe9c; }
-
-    .log-msg {
-      color: #f8f9fa;
-    }
-
-    /* Glassmorphism Navigation Bottom Tab Bar */
-    .tab-bar-container {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 16px 24px 24px;
-      background: linear-gradient(to top, var(--bg-color) 80%, transparent);
-      z-index: 10;
-    }
-
-    .tab-bar {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 999px; /* Pill Shape */
-      padding: 6px;
-      box-shadow: var(--shadow-ambient);
-      border: 2px solid var(--outline-variant);
-    }
-
-    .tab-item {
-      border: none;
-      outline: none;
-      background: transparent;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 12px 24px;
-      border-radius: 999px; /* Pill shape */
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-family: var(--font-ui);
-    }
-
-    .tab-item i {
-      font-size: 18px;
-    }
-
-    .tab-item span {
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .tab-item.active {
-      color: var(--primary);
-      background: var(--surface-container-low);
-    }
-
-    .tab-item.active i {
-      transform: translateY(-1px);
-    }
-
-    /* Setup Connection Overlay screen */
+    /* Overlay setup */
     .overlay {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(248, 249, 250, 0.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(248, 249, 250, 0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       z-index: 100;
       display: flex;
       flex-direction: column;
@@ -562,8 +434,8 @@
     }
 
     .overlay-logo {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background: var(--surface);
       border: 2px solid var(--outline-variant);
@@ -571,9 +443,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 44px;
+      font-size: 38px;
       color: var(--primary);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       position: relative;
     }
 
@@ -582,7 +454,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 3px solid var(--primary-container);
+      border: 3px solid var(--color-safe);
       opacity: 0.15;
       animation: ripple 2s infinite ease-out;
     }
@@ -592,50 +464,43 @@
       100% { transform: scale(1.4); opacity: 0; }
     }
 
-    @keyframes blink {
-      0% { opacity: 0.7; transform: scale(0.98); }
-      100% { opacity: 1; transform: scale(1.02); }
-    }
-
     .overlay-title {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
+      color: var(--text-main);
+      margin-bottom: 6px;
     }
 
     .overlay-desc {
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 36px;
+      margin-bottom: 30px;
       line-height: 1.5;
     }
 
     .connect-btn {
-      width: 170px;
-      height: 170px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: #ffffff;
-      background: var(--primary);
+      background: var(--text-main);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 10px 25px rgba(0, 109, 54, 0.25);
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(25, 28, 29, 0.15);
       border: none;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
       position: relative;
       top: 0;
     }
 
     .connect-btn:hover {
-      background: #005429;
-      box-shadow: 0 12px 30px rgba(0, 109, 54, 0.35);
+      background: #000000;
       transform: scale(1.02);
     }
 
@@ -645,77 +510,30 @@
     }
 
     .connect-btn i {
-      font-size: 32px;
+      font-size: 28px;
     }
 
     #overlay-error-msg {
-      color: var(--tertiary);
+      color: var(--color-danger);
       font-size: 12px;
-      margin-top: 20px;
+      margin-top: 18px;
       font-weight: 700;
       min-height: 18px;
     }
 
-    .device-setting-card {
-      margin-top: 28px;
-      width: 100%;
-      max-width: 280px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: left;
-    }
-
-    .setting-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .setting-input-wrapper {
-      position: relative;
-    }
-
     .setting-input {
-      width: 100%;
       border: 2px solid var(--outline-variant);
       outline: none;
-      padding: 10px 14px;
-      border-radius: 999px; /* Pill Shape */
+      padding: 10px 20px;
+      border-radius: 999px;
       font-family: var(--font-mono);
       font-size: 13px;
       background: var(--surface);
       color: var(--text-main);
+      width: 200px;
+      text-align: center;
+      margin-top: 12px;
       box-shadow: var(--shadow-ambient);
-    }
-
-    .setting-input:focus {
-      border-color: var(--primary);
-    }
-
-    .compat-guide {
-      margin-top: 36px;
-      background: var(--surface-container-low);
-      padding: 16px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 320px;
-      font-size: 11px;
-      text-align: left;
-      line-height: 1.6;
-      border: 1px dashed var(--outline);
-    }
-    .compat-guide strong {
-      display: block;
-      color: var(--primary);
-      margin-bottom: 6px;
-    }
-    .compat-guide ul {
-      padding-left: 14px;
-      color: var(--text-muted);
     }
   </style>
 </head>
@@ -728,8 +546,8 @@
         <div class="overlay-logo-ring"></div>
         <i class="fa-solid fa-clock-rotate-left"></i>
       </div>
-      <h1 class="overlay-title">Bathroom Health</h1>
-      <p class="overlay-desc">화장실에서의 건강한 시간을 지켜주는<br>스마트 BLE 타이머 대시보드입니다.</p>
+      <h1 class="overlay-title">Flush Flow</h1>
+      <p class="overlay-desc">화장실에서의 건강한 약속을 위해<br>블루투스 기기(ESP_KJ)에 연결해 주세요.</p>
       
       <button class="connect-btn" id="btn-overlay-connect">
         <i class="fa-brands fa-bluetooth-b"></i>
@@ -737,28 +555,14 @@
       </button>
       <div id="overlay-error-msg"></div>
  
-      <div class="device-setting-card">
-        <span class="setting-label"><i class="fa-solid fa-sliders"></i> 스캔 기기명 필터 (Prefix)</span>
-        <div class="setting-input-wrapper">
-          <input type="text" class="setting-input" id="input-device-prefix" value="ESP_KJ" placeholder="예: ESP_KJ">
-        </div>
-      </div>
- 
-      <div class="compat-guide">
-        <strong>💡 플랫폼별 블루투스 안내</strong>
-        <ul>
-          <li><strong>안드로이드:</strong> Chrome 브라우저 환경에서 실행</li>
-          <li><strong>아이폰 (iOS):</strong> App Store에서 <strong>Bluefy</strong> 브라우저 설치 후 실행</li>
-          <li>보안 가이드에 따라 <strong>HTTPS</strong> 또는 <strong>localhost</strong> 환경에서만 동작합니다.</li>
-        </ul>
-      </div>
+      <input type="text" class="setting-input" id="input-device-prefix" value="ESP_KJ" placeholder="기기 필터">
     </div>
   
     <!-- Header Section -->
     <header>
-      <div class="brand-title">
+      <div class="brand-logo">
         <i class="fa-solid fa-toilet"></i>
-        <span>건강한 화장실 생활</span>
+        <span>Flush Flow</span>
       </div>
       <button class="status-badge" id="btn-header-connect">
         <div class="status-dot"></div>
@@ -766,122 +570,90 @@
       </button>
     </header>
 
-    <!-- Main Content Area -->
-    <div class="content-area">
+    <!-- Main Viewport Area -->
+    <div class="main-viewport">
       
-      <!-- TAB 1: TIMER & LIGHTS -->
-      <div class="tab-content" id="tab-timer" style="display: flex; flex-direction: column; gap: 20px;">
-        
-        <!-- Timer Monitor Card -->
-        <div class="dashboard-card">
-          <div class="card-title">
-            <span><i class="fa-solid fa-stopwatch"></i> 실시간 건강 타이머</span>
+      <!-- Timer Focus Group -->
+      <div class="timer-center-wrap">
+        <div class="timer-ring-outer">
+          <div class="timer-progress" id="timer-progress"></div>
+          <div class="timer-content">
+            <!-- Dynamic Toilet Character SVG (Stitch Spec) -->
+            <div class="character-container" id="character-box">
+              <svg class="character-svg" viewBox="0 0 100 100" width="84" height="84">
+                <!-- Toilet Silhouette -->
+                <path d="M30 68 C30 48, 70 48, 70 68 Z" fill="#e2e8f0" stroke="var(--text-muted)" stroke-width="3"/>
+                <rect x="25" y="68" width="50" height="12" rx="4" fill="#cbd5e1" stroke="var(--text-muted)" stroke-width="3"/>
+                
+                <!-- Character Body (gradient mapped to status color) -->
+                <circle cx="50" cy="40" r="20" id="char-body" fill="var(--active-theme-color)" stroke="var(--text-main)" stroke-width="3.5" style="transition: fill 0.5s ease;"/>
+                
+                <!-- Eyes Group -->
+                <g id="char-eyes">
+                  <circle cx="43" cy="38" r="2.5" fill="var(--text-main)"/>
+                  <circle cx="57" cy="38" r="2.5" fill="var(--text-main)"/>
+                </g>
+                <!-- Mouth -->
+                <path id="char-mouth" d="M46 48 Q50 51 54 48" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            
+            <span class="timer-time-display" id="timer-time">00:00</span>
+            <span class="timer-status-text" id="timer-status">대기 중</span>
           </div>
-          <div class="timer-gauge-container">
-            <div class="timer-ring-outer">
-              <div class="timer-progress" id="timer-progress"></div>
-              <div class="timer-inner-value">
-                <!-- Character Illustration Area (Stitch Spec) -->
-                <div class="character-container" id="character-box">
-                  <svg class="character-svg" viewBox="0 0 100 100" width="70" height="70">
-                    <!-- Toilet Bowl -->
-                    <path d="M30 70 C30 52, 70 52, 70 70 Z" fill="#e2e8f0" stroke="var(--text-muted)" stroke-width="3"/>
-                    <rect x="25" y="70" width="50" height="12" rx="4" fill="#cbd5e1" stroke="var(--text-muted)" stroke-width="3"/>
-                    <!-- Character Body -->
-                    <circle cx="50" cy="42" r="20" id="char-body" fill="#cbd5e1" stroke="var(--text-main)" stroke-width="3.5"/>
-                    <!-- Eyes Group -->
-                    <g id="char-eyes">
-                      <circle cx="43" cy="40" r="2.5" fill="var(--text-main)"/>
-                      <circle cx="57" cy="40" r="2.5" fill="var(--text-main)"/>
-                    </g>
-                    <!-- Mouth -->
-                    <path id="char-mouth" d="M46 49 Q50 52 54 49" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>
-                  </svg>
-                </div>
-                <span class="timer-time-display" id="timer-time">00:00</span>
-                <span class="timer-status-text" id="timer-status">대기 중</span>
+        </div>
+        
+        <!-- Overtime Danger Warning Banner -->
+        <div id="warning-banner">
+          ⚠️ 화장실에 오래 앉아있으면 건강에 위험합니다!
+        </div>
+      </div>
+
+      <!-- Pill Shaped Action Buttons -->
+      <div class="bottom-controls">
+        <div class="btn-pill-group">
+          <button class="btn-squishy" id="btn-trigger-timer">
+            <i class="fa-solid fa-play"></i>
+            <span>시작 / 정지</span>
+          </button>
+          <button class="btn-squishy" id="btn-reset-timer">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+            <span>리셋</span>
+          </button>
+          <button class="btn-squishy btn-squishy-danger" id="btn-mute-buzzer">
+            <i class="fa-solid fa-volume-xmark"></i>
+            <span>경고음 끄기 (수동 음소거)</span>
+          </button>
+        </div>
+
+        <!-- Toggleable Debug Logs console -->
+        <div class="log-toggle-container">
+          <button class="btn-toggle-logs" id="btn-toggle-logs">
+            <i class="fa-solid fa-terminal"></i>
+            <span>통신 로그 보기</span>
+          </button>
+          <div class="terminal-panel" id="terminal-panel">
+            <div class="terminal-header">
+              <span>COMMUNICATION TERMINAL</span>
+              <span id="btn-clear-logs" style="cursor:pointer;"><i class="fa-solid fa-trash-can"></i> 비우기</span>
+            </div>
+            <div class="terminal-log" id="terminal-log">
+              <div class="log-item">
+                <span class="log-time">[00:00:00]</span>
+                <span class="log-direction sys">[SYS]</span>
+                <span class="log-msg">Flush Flow 앱이 실행되었습니다.</span>
               </div>
             </div>
-            <!-- overtime warning banner -->
-            <div id="warning-msg" style="display:none; color:var(--tertiary); font-weight:700; font-size:13px; margin-top:16px; text-align:center; padding: 10px 16px; background-color: var(--tertiary-container); border-radius: 999px; border: 2px solid var(--tertiary); animation: blink 0.8s infinite alternate;">
-              ⚠️ 화장실에 오래 앉아있으면 건강에 위험합니다!
-            </div>
-          </div>
-        </div>
-
-        <!-- LED Color State Monitor Card -->
-        <div class="dashboard-card led-status-card">
-          <div class="led-info">
-            <div class="led-bulb-wrapper" id="led-bulb">
-              <i class="fa-solid fa-lightbulb"></i>
-            </div>
-            <div class="led-details">
-              <span class="led-name">NeoPixel LED 상태</span>
-              <span class="led-desc" id="led-desc">타이머 대기 상태 (소등)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Manual Controls Card -->
-        <div class="dashboard-card">
-          <div class="card-title">
-            <span><i class="fa-solid fa-hand-pointer"></i> 원격 수동 제어</span>
-          </div>
-          <div class="actions-grid">
-            <button class="btn-action" id="btn-trigger-timer">
-              <i class="fa-solid fa-play"></i>
-              <span>시작 / 정지</span>
-            </button>
-            <button class="btn-action" id="btn-reset-timer">
-              <i class="fa-solid fa-arrow-rotate-left"></i>
-              <span>타이머 리셋</span>
-            </button>
-            <button class="btn-action btn-danger-action" id="btn-mute-buzzer" style="grid-column: span 2;">
-              <i class="fa-solid fa-volume-xmark"></i>
-              <span>경고음 끄기 (수동 음소거)</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- TAB 2: TERMINAL LOGS -->
-      <div class="tab-content" id="tab-logs" style="display: none;">
-        <div class="terminal-container">
-          <div class="terminal-header">
-            <span>COMMUNICATION TERMINAL</span>
-            <span id="btn-clear-logs" style="cursor:pointer; color: var(--primary-container);"><i class="fa-solid fa-trash-can"></i> 비우기</span>
-          </div>
-          <div class="terminal-log" id="terminal-log">
-            <div class="log-item">
-              <span class="log-time">[00:00:00]</span>
-              <span class="log-direction sys">[SYS]</span>
-              <span class="log-msg">앱이 시작되었습니다. BLE 기기에 연결해 주세요.</span>
-            </div>
           </div>
         </div>
       </div>
 
-    </div>
-
-    <!-- Bottom Navigation Bar -->
-    <div class="tab-bar-container">
-      <div class="tab-bar">
-        <button class="tab-item active" data-tab="tab-timer">
-          <i class="fa-solid fa-gauge-high"></i>
-          <span>대시보드</span>
-        </button>
-        <button class="tab-item" data-tab="tab-logs">
-          <i class="fa-solid fa-terminal"></i>
-          <span>통신 로그</span>
-        </button>
-      </div>
     </div>
 
   </div>
 
   <script>
-    // Bluetooth NUS Service UUIDs
+    // BLE NUS Protocol Specifications
     const NUS_SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
     const NUS_RX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
     const NUS_TX_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
@@ -902,42 +674,26 @@
     const timerProgress = document.getElementById('timer-progress');
     const timerTime = document.getElementById('timer-time');
     const timerStatus = document.getElementById('timer-status');
-    const ledBulb = document.getElementById('led-bulb');
-    const ledDesc = document.getElementById('led-desc');
+    const warningBanner = document.getElementById('warning-banner');
 
-    // Tab Navigation
-    const tabItems = document.querySelectorAll('.tab-item');
-    const tabContents = document.querySelectorAll('.tab-content');
+    const charBody = document.getElementById('char-body');
+    const charMouth = document.getElementById('char-mouth');
+    const charEyes = document.getElementById('char-eyes');
 
-    tabItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const targetTabId = item.getAttribute('data-tab');
-        
-        tabItems.forEach(tab => tab.classList.remove('active'));
-        item.classList.add('active');
+    // UI Styles Toggler helper
+    function updateTheme(colorHex, glowHex) {
+      document.documentElement.style.setProperty('--active-theme-color', colorHex);
+      document.documentElement.style.setProperty('--active-glow-color', glowHex);
+    }
 
-        // Toggle visibility
-        if (targetTabId === 'tab-timer') {
-          document.getElementById('tab-timer').style.display = 'flex';
-          document.getElementById('tab-logs').style.display = 'none';
-        } else {
-          document.getElementById('tab-timer').style.display = 'none';
-          document.getElementById('tab-logs').style.display = 'flex';
-        }
-      });
-    });
-
-    // Helper: Update Header status UI
     function updateStatus(text, stateClass) {
       txtStatus.innerText = text;
       
       const badge = document.getElementById('btn-header-connect');
       badge.className = 'status-badge'; 
-      
       if (stateClass) {
         badge.classList.add(stateClass);
       }
-      
       logTerminal('SYS', `연결 상태 변경: ${text}`);
     }
 
@@ -994,19 +750,20 @@
       updateStatus('연결 대기', 'disconnected');
       connectionOverlay.style.display = 'flex';
       
-      // Reset UI elements
+      // Reset UI
       timerTime.innerText = '00:00';
       timerStatus.innerText = '대기 중';
       timerProgress.style.setProperty('--timer-angle', '0deg');
-      document.getElementById('warning-msg').style.display = 'none';
-      resetLedBulb();
+      warningBanner.style.display = 'none';
+      
+      resetCharacterDesign();
       
       bluetoothDevice = null;
       rxCharacteristic = null;
       txCharacteristic = null;
     }
 
-    // Send ASCII Command to ESP32
+    // Send command to ESP32
     async function sendCommand(charCommand) {
       if (!rxCharacteristic) {
         logTerminal('SYS', '경고: 블루투스가 연결되어 있지 않습니다.');
@@ -1029,9 +786,8 @@
       const text = decoder.decode(value);
       
       rxBuffer += text;
-      
       let lines = rxBuffer.split('\n');
-      rxBuffer = lines.pop(); // Keep half-received lines in buffer
+      rxBuffer = lines.pop(); // Hold incomplete lines
       
       for (let line of lines) {
         line = line.trim();
@@ -1042,12 +798,35 @@
       }
     }
 
+    // Dynamic Character Face & Color States
+    function resetCharacterDesign() {
+      updateTheme('#cbd5e1', 'rgba(203, 213, 225, 0.2)');
+      if (charMouth) charMouth.setAttribute('d', 'M46 48 Q50 51 54 48');
+      if (charEyes) charEyes.innerHTML = '<circle cx="43" cy="38" r="2.5" fill="var(--text-main)"/><circle cx="57" cy="38" r="2.5" fill="var(--text-main)"/>';
+    }
+
+    function updateCharacterState(color) {
+      if (color === 'GREEN') {
+        updateTheme('var(--color-safe)', 'rgba(74, 222, 128, 0.25)');
+        if (charMouth) charMouth.setAttribute('d', 'M46 48 Q50 53 54 48'); // 웃음
+        if (charEyes) charEyes.innerHTML = '<path d="M40 38 Q43 35 45 38" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 38 Q57 35 59 38" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // 행복한 눈
+      } 
+      else if (color === 'YELLOW') {
+        updateTheme('var(--color-warn)', 'rgba(254, 208, 27, 0.25)');
+        if (charMouth) charMouth.setAttribute('d', 'M45 49 L55 49'); // 일자
+        if (charEyes) charEyes.innerHTML = '<path d="M41 39 Q43 36 45 39" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 39 Q57 36 59 39" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // 걱정스러운 눈
+      } 
+      else if (color === 'RED') {
+        updateTheme('var(--color-danger)', 'rgba(239, 68, 68, 0.25)');
+        if (charMouth) charMouth.setAttribute('d', 'M46 51 Q50 46 54 51'); // 슬픔
+        if (charEyes) charEyes.innerHTML = '<path d="M40 36 L45 41 M45 36 L40 41" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 36 L60 41 M60 36 L55 41" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // X 모양 눈
+      } 
+      else {
+        resetCharacterDesign();
+      }
+    }
+
     // Parse incoming data packets
-    // Expected Packets:
-    // - time:MM:SS
-    // - status:RUNNING / status:STOPPED
-    // - color:GREEN / color:YELLOW / color:RED / color:OFF
-    // - beep:ON
     function parseIncomingLine(line) {
       if (line.startsWith('time:')) {
         const timeVal = line.substring(5);
@@ -1063,12 +842,11 @@
           const angle = Math.min(360, (totalSecs / maxSecs) * 360);
           timerProgress.style.setProperty('--timer-angle', `${angle}deg`);
           
-          // Show warning message when timer exceeds 40 seconds (Test mode threshold)
-          const warningMsg = document.getElementById('warning-msg');
+          // Overtime Threshold warning trigger (40 seconds for test mode)
           if (totalSecs >= 40) {
-            warningMsg.style.display = 'block';
+            warningBanner.style.display = 'block';
           } else {
-            warningMsg.style.display = 'none';
+            warningBanner.style.display = 'none';
           }
         }
       }
@@ -1076,75 +854,23 @@
         const status = line.substring(7);
         if (status === 'RUNNING') {
           timerStatus.innerText = '동작 중 ⏱️';
-          timerStatus.style.color = 'var(--primary)';
         } else {
           timerStatus.innerText = '정지됨 ⏹️';
-          timerStatus.style.color = 'var(--text-muted)';
-          document.getElementById('warning-msg').style.display = 'none';
+          warningBanner.style.display = 'none';
         }
       }
       else if (line.startsWith('color:')) {
         const color = line.substring(6);
-        updateLedBulb(color);
+        updateCharacterState(color);
       }
       else if (line.startsWith('beep:ON')) {
-        // Trigger visual pulse when buzzer alarm rings
         pulseTimerDisplay();
-      }
-    }
-
-    function resetLedBulb() {
-      ledBulb.className = 'led-bulb-wrapper';
-      ledDesc.innerText = '타이머 대기 상태 (소등)';
-      timerProgress.style.removeProperty('--timer-color');
-      
-      const charBody = document.getElementById('char-body');
-      const charMouth = document.getElementById('char-mouth');
-      const charEyes = document.getElementById('char-eyes');
-      
-      if (charBody) charBody.setAttribute('fill', '#cbd5e1');
-      if (charMouth) charMouth.setAttribute('d', 'M46 49 Q50 52 54 49');
-      if (charEyes) charEyes.innerHTML = '<circle cx="43" cy="40" r="2.5" fill="var(--text-main)"/><circle cx="57" cy="40" r="2.5" fill="var(--text-main)"/>';
-    }
-
-    function updateLedBulb(color) {
-      ledBulb.className = 'led-bulb-wrapper';
-      const charBody = document.getElementById('char-body');
-      const charMouth = document.getElementById('char-mouth');
-      const charEyes = document.getElementById('char-eyes');
-      
-      if (color === 'GREEN') {
-        ledBulb.classList.add('active-green');
-        ledDesc.innerText = '안정 단계 (초록 조명)';
-        timerProgress.style.setProperty('--timer-color', 'var(--color-green)');
-        
-        if (charBody) charBody.setAttribute('fill', 'var(--color-green)');
-        if (charMouth) charMouth.setAttribute('d', 'M46 49 Q50 53 54 49'); // Smiling mouth
-        if (charEyes) charEyes.innerHTML = '<path d="M40 40 Q43 37 45 40" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 40 Q57 37 59 40" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // Happy curved eyes
-      } else if (color === 'YELLOW') {
-        ledBulb.classList.add('active-yellow');
-        ledDesc.innerText = '주의 단계 (노란 조명)';
-        timerProgress.style.setProperty('--timer-color', 'var(--color-yellow)');
-        
-        if (charBody) charBody.setAttribute('fill', 'var(--color-yellow)');
-        if (charMouth) charMouth.setAttribute('d', 'M45 49 L55 49'); // Straight mouth
-        if (charEyes) charEyes.innerHTML = '<path d="M41 41 Q43 38 45 41" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 41 Q57 38 59 41" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // Concerned eyes
-      } else if (color === 'RED') {
-        ledBulb.classList.add('active-red');
-        ledDesc.innerText = '경고 단계! (빨간 조명 + 경보)';
-        timerProgress.style.setProperty('--timer-color', 'var(--color-red)');
-        
-        if (charBody) charBody.setAttribute('fill', 'var(--color-red)');
-        if (charMouth) charMouth.setAttribute('d', 'M46 51 Q50 46 54 51'); // Sad/Crying mouth
-        if (charEyes) charEyes.innerHTML = '<path d="M40 38 L45 43 M45 38 L40 43" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 38 L60 43 M60 38 L55 43" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // Stressed X eyes
-      } else {
-        resetLedBulb();
       }
     }
 
     function pulseTimerDisplay() {
       timerTime.style.transform = 'scale(1.15)';
-      timerTime.style.color = 'var(--color-red)';
+      timerTime.style.color = 'var(--color-danger)';
       timerTime.style.transition = 'none';
       setTimeout(() => {
         timerTime.style.transition = 'all 0.3s ease';
@@ -1152,6 +878,22 @@
         timerTime.style.color = 'var(--text-main)';
       }, 150);
     }
+
+    // Toggle Console logs panel visibility
+    const btnToggleLogs = document.getElementById('btn-toggle-logs');
+    const terminalPanel = document.getElementById('terminal-panel');
+    let logsVisible = false;
+
+    btnToggleLogs.addEventListener('click', () => {
+      logsVisible = !logsVisible;
+      if (logsVisible) {
+        terminalPanel.style.display = 'flex';
+        btnToggleLogs.querySelector('span').innerText = '통신 로그 접기';
+      } else {
+        terminalPanel.style.display = 'none';
+        btnToggleLogs.querySelector('span').innerText = '통신 로그 보기';
+      }
+    });
 
     // Terminal Logger
     function logTerminal(direction, message) {
@@ -1177,8 +919,7 @@
       terminalLog.appendChild(item);
       terminalLog.scrollTop = terminalLog.scrollHeight;
       
-      // Limit logs display count
-      if (terminalLog.children.length > 80) {
+      if (terminalLog.children.length > 60) {
         terminalLog.removeChild(terminalLog.firstChild);
       }
     }
