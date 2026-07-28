@@ -728,20 +728,19 @@
     <div class="screen-view" id="screen-active">
       
       <div style="width: 100%;">
-        <!-- Dynamic Phase Badge -->
-        <div class="active-status-bar" id="active-phase-badge">
-          <span>● PHASE 1: SMOOTH FLOW</span>
-        </div>
-        <p class="active-status-desc" id="active-phase-desc">Everything is flowing well.</p>
+        <!-- 심플 단일 건강 알림 문구 (Stitch Text clean up) -->
+        <p class="active-status-desc" style="font-weight: 700; color: var(--text-main); font-size: 14px; margin-top: 10px; margin-bottom: 12px; text-align: center;">
+          ⚠️ 화장실에 오래 앉아있을수록 건강에 좋지 않습니다.
+        </p>
         
         <!-- Top linear progress bar -->
-        <div class="top-progress-bar-container">
+        <div class="top-progress-bar-container" style="margin-bottom: 16px;">
           <div class="top-progress-fill" id="top-progress-fill"></div>
         </div>
       </div>
 
       <!-- Large Character Panel (Removed Circle Ring) -->
-      <div class="timer-ring-outer">
+      <div class="timer-ring-outer" style="margin-bottom: 16px;">
         <div class="active-timer-content">
           <div class="active-image-inner">
             <img id="active-char-img" src="https://lh3.googleusercontent.com/aida/AP1WRLsk4rWwmcEuGsTHk0Gol4c5MrROxunxQL4qBy0jviDoENtEMGrFM9DP34Q8aGTobaYE4cYfxpuTu24V9AGqw-UnoWknaTdQ0apmRkrgFvbfcbCa1GoJhPHjHIBEdQrYfA1t-o0rWkhOOqKgqJ1t42rwXmxrTTERqma8d6FIOYeXbJYsf4dh2O5CJUhgxK5NFydDUUwu86cxGUHTf0vV0K_oocNWoHtV1Zz2h3DD1LZ5nBcFgZN2XRvYEK2V" alt="Active Buddy">
@@ -749,29 +748,18 @@
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 16px;">
+      <div style="text-align: center; margin-bottom: 20px;">
         <span class="active-time-display" id="active-time">00:00</span>
         <p class="active-time-label">Minutes Active</p>
       </div>
 
-      <!-- Overtime Danger Warning Banner -->
-      <div id="warning-banner">
+      <!-- Overtime Danger Warning Banner (화면 밑에서 깜빡이는 경고) -->
+      <div id="warning-banner" style="margin-top: 0; margin-bottom: 16px; width: 100%;">
         ⚠️ 화장실에 오래 앉아있으면 건강에 위험합니다!
       </div>
 
-      <!-- Tip Information Card -->
-      <div class="tip-card">
-        <div class="tip-icon-wrapper" id="tip-icon">
-          <i class="fa-solid fa-info"></i>
-        </div>
-        <div class="tip-details">
-          <span class="tip-title">Did you know?</span>
-          <span class="tip-desc" id="tip-desc-text">Lean forward slightly for the optimal posture.</span>
-        </div>
-      </div>
-
       <!-- Finish Button -->
-      <div style="width: 100%; margin-top: 24px;">
+      <div style="width: 100%; margin-top: auto;">
         <button class="btn-pill-primary" id="btn-finish-timer" style="background-color: var(--primary);">
           <i class="fa-regular fa-circle-stop"></i>
           <span>Finish Session</span>
@@ -808,6 +796,7 @@
     let rxCharacteristic = null;
     let txCharacteristic = null;
     let rxBuffer = '';
+    let isTimerRunning = false; // 타이머 실행 상태 동기화 변수 (초기 오작동 락 방지)
 
     // HTML Images Map from Stitch
     const CHAR_URLS = {
@@ -834,14 +823,10 @@
     // Active Timer elements
     const topProgressFill = document.getElementById('top-progress-fill');
     const activeTime = document.getElementById('active-time');
-    const activePhaseBadge = document.getElementById('active-phase-badge');
-    const activePhaseDesc = document.getElementById('active-phase-desc');
     const activeCharImg = document.getElementById('active-char-img');
     const readyLastTime = document.getElementById('ready-last-time');
     
     const warningBanner = document.getElementById('warning-banner');
-    const tipIcon = document.getElementById('tip-icon');
-    const tipDescText = document.getElementById('tip-desc-text');
 
     // Dynamic Theme Helper
     function updateThemeStyle(mainColorHex, glowHex) {
@@ -996,8 +981,8 @@
           const progressPercent = Math.min(100, (totalSecs / maxSecs) * 100);
           topProgressFill.style.width = `${progressPercent}%`;
           
-          // Overtime Threshold warning trigger (40 seconds for test mode)
-          if (totalSecs >= 40) {
+          // 타이머가 작동 상태(RUNNING)일 때만 잠금 화면 전환을 활성화
+          if (isTimerRunning && totalSecs >= 40) {
             warningBanner.style.display = 'block';
             activeCharImg.src = CHAR_URLS.COLLAPSED; // 기절 캐릭터 이미지
             
@@ -1015,10 +1000,12 @@
       else if (line.startsWith('status:')) {
         const status = line.substring(7);
         if (status === 'RUNNING') {
+          isTimerRunning = true;
           screenReady.style.display = 'none';
           screenActive.style.display = 'flex';
           lockoutOverlay.style.display = 'none';
         } else {
+          isTimerRunning = false;
           // If stopped, update last session time and return to ready screen
           readyLastTime.innerText = activeTime.innerText;
           screenActive.style.display = 'none';
@@ -1041,36 +1028,15 @@
     function updateUIStateByColor(color) {
       if (color === 'GREEN') {
         updateThemeStyle('var(--color-safe)', 'rgba(74, 222, 128, 0.25)');
-        activePhaseBadge.style.backgroundColor = '#e6f7ed';
-        activePhaseBadge.style.color = '#006d36';
-        activePhaseBadge.innerHTML = '<span>● PHASE 1: SMOOTH FLOW</span>';
-        activePhaseDesc.innerText = 'Everything is flowing well.';
         activeCharImg.src = CHAR_URLS.GREEN; // 초록 캐릭터
-        
-        tipIcon.style.backgroundColor = 'var(--color-safe)';
-        tipDescText.innerText = 'Lean forward slightly for the optimal posture.';
       } 
       else if (color === 'YELLOW') {
         updateThemeStyle('var(--color-warn)', 'rgba(254, 208, 27, 0.25)');
-        activePhaseBadge.style.backgroundColor = '#fffbeb';
-        activePhaseBadge.style.color = '#735c00';
-        activePhaseBadge.innerHTML = '<span>● PHASE 2: WARNING ZONE</span>';
-        activePhaseDesc.innerText = 'Time is accumulating. Stay relaxed.';
         activeCharImg.src = CHAR_URLS.YELLOW; // 노랑 캐릭터
-        
-        tipIcon.style.backgroundColor = 'var(--color-warn)';
-        tipDescText.innerText = 'Breathe slowly and avoid pressing hard.';
       } 
       else if (color === 'RED') {
         updateThemeStyle('var(--color-danger)', 'rgba(239, 68, 68, 0.25)');
-        activePhaseBadge.style.backgroundColor = '#fdf2f2';
-        activePhaseBadge.style.color = '#a83639';
-        activePhaseBadge.innerHTML = '<span>● PHASE 3: DANGER TIME</span>';
-        activePhaseDesc.innerText = 'Overtime warning! Finish up quickly.';
         activeCharImg.src = CHAR_URLS.RED; // 빨강 캐릭터
-        
-        tipIcon.style.backgroundColor = 'var(--color-danger)';
-        tipDescText.innerText = 'Sitting too long causes pelvic congestion!';
       } 
       else {
         resetToDefaultTheme();
