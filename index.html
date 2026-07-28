@@ -418,7 +418,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: #0f172a; /* Dark Blue Slate */
+      background: #000000; /* 완전 검은색 배경 */
       z-index: 200;
       display: none;
       flex-direction: column;
@@ -430,12 +430,15 @@
 
     .lockout-image-card {
       width: 100%;
-      max-width: 280px;
-      height: auto;
+      max-width: 300px;
+      aspect-ratio: 1;
       border-radius: 24px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-      margin-bottom: 30px;
-      border: 2px solid rgba(255, 255, 255, 0.05);
+      background-color: #a5f3fc; /* 캐릭터 전용 하늘색 단독 카드형 배경 */
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      margin-bottom: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      object-fit: contain;
+      padding: 20px;
     }
 
     .lockout-title {
@@ -659,12 +662,11 @@
 
     <!-- Lockout Screen Overlay (Stitch Lock Screen Spec) -->
     <div class="lockout-overlay" id="lockout-overlay">
-      <!-- Stitch Dark Mode Lock Screen Image asset -->
-      <img class="lockout-image-card" src="https://lh3.googleusercontent.com/aida/AP1WRLthUWyGepxYZ9RQCewS7nYsQaRZizLy6Ar2g2B5kzfuVg0aZIbgjDTP_3mhbNmz_QfBvnqKyFNBnoNd_k9FiEe0nsXcalPGPFOJ8-FAxBDqgCx2DrLVEwUUD6pqs-T3CUoQ10W9FEYJ9asSveETUCi1l8MbnRDLwohDzgiRZxmWhbh6SRuhYgX5_M7H_aszmhLJ72R7_ZdegNUQ5I96JlLp_txZ9XuG96AssjgT1XshGPAUmvJS31ugy1M" alt="Lock screen">
-      <h2 class="lockout-title">HEALTH LIMIT EXCEEDED</h2>
-      <p class="lockout-desc">화장실 이용 제한 시간(6분)이 초과되어<br>스마트폰 화면이 잠겼습니다. 밖으로 이동해 주세요!</p>
+      <!-- 기절한 캐릭터 단독 일러스트로 교체 -->
+      <img class="lockout-image-card" src="https://lh3.googleusercontent.com/aida/AP1WRLvOAeu1ct9-AKpACAtziswEdrNEvKPGVH8IOLluyROcA7lxn1gVx0vu_XnSyXKVSOcAc3l07vwVKdqlTEtdZJ67XO4FQoWHvj2b7kJgQzj_5aw4blvSQcEsEU8UDtPVooiVCDuGV96ug9ExNzy9sEaQQkkUkNLddpEHUAIK_yga6xOvztssMXB4pinCzSnYuOPP3fCcq5S3xAOx459cNcj7FGOe3D12erg5SARaM8j6lTM97pIz5L-pa0xX" alt="Collapsed Buddy">
+      <h2 class="lockout-title" style="font-size: 22px; color: var(--color-danger); margin-top: 10px; line-height: 1.4;">휴대폰이 잠금되었습니다.<br>화장실 이용을 종료하세요!</h2>
       
-      <button class="btn-squishy" id="btn-unlock-device" style="background: var(--color-danger); border-color: var(--color-danger); color: #ffffff; width: 100%; max-width: 280px; box-shadow: 0 6px 15px rgba(239,68,68,0.25);">
+      <button class="btn-squishy" id="btn-unlock-device" style="background: #334155; border-color: #475569; color: #ffffff; width: 100%; max-width: 280px; margin-top: 24px; box-shadow: none;">
         <i class="fa-solid fa-lock-open" style="color: #ffffff;"></i>
         <span>잠금 해제 (타이머 리셋)</span>
       </button>
