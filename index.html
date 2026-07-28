@@ -264,14 +264,35 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding-top: 10px;
     }
 
     .timer-time-display {
       font-family: var(--font-mono);
-      font-size: 52px; /* Large Legible Spec */
+      font-size: 42px; /* Adjusted size to fit character below */
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -2px;
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    /* Character floating animation (Stitch Spec) */
+    .character-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2px;
+      height: 70px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
     }
 
     .timer-status-text {
@@ -571,6 +592,11 @@
       100% { transform: scale(1.4); opacity: 0; }
     }
 
+    @keyframes blink {
+      0% { opacity: 0.7; transform: scale(0.98); }
+      100% { opacity: 1; transform: scale(1.02); }
+    }
+
     .overlay-title {
       font-size: 28px;
       font-weight: 700;
@@ -755,9 +781,30 @@
             <div class="timer-ring-outer">
               <div class="timer-progress" id="timer-progress"></div>
               <div class="timer-inner-value">
+                <!-- Character Illustration Area (Stitch Spec) -->
+                <div class="character-container" id="character-box">
+                  <svg class="character-svg" viewBox="0 0 100 100" width="70" height="70">
+                    <!-- Toilet Bowl -->
+                    <path d="M30 70 C30 52, 70 52, 70 70 Z" fill="#e2e8f0" stroke="var(--text-muted)" stroke-width="3"/>
+                    <rect x="25" y="70" width="50" height="12" rx="4" fill="#cbd5e1" stroke="var(--text-muted)" stroke-width="3"/>
+                    <!-- Character Body -->
+                    <circle cx="50" cy="42" r="20" id="char-body" fill="#cbd5e1" stroke="var(--text-main)" stroke-width="3.5"/>
+                    <!-- Eyes Group -->
+                    <g id="char-eyes">
+                      <circle cx="43" cy="40" r="2.5" fill="var(--text-main)"/>
+                      <circle cx="57" cy="40" r="2.5" fill="var(--text-main)"/>
+                    </g>
+                    <!-- Mouth -->
+                    <path id="char-mouth" d="M46 49 Q50 52 54 49" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
                 <span class="timer-time-display" id="timer-time">00:00</span>
                 <span class="timer-status-text" id="timer-status">대기 중</span>
               </div>
+            </div>
+            <!-- overtime warning banner -->
+            <div id="warning-msg" style="display:none; color:var(--tertiary); font-weight:700; font-size:13px; margin-top:16px; text-align:center; padding: 10px 16px; background-color: var(--tertiary-container); border-radius: 999px; border: 2px solid var(--tertiary); animation: blink 0.8s infinite alternate;">
+              ⚠️ 화장실에 오래 앉아있으면 건강에 위험합니다!
             </div>
           </div>
         </div>
@@ -951,6 +998,7 @@
       timerTime.innerText = '00:00';
       timerStatus.innerText = '대기 중';
       timerProgress.style.setProperty('--timer-angle', '0deg');
+      document.getElementById('warning-msg').style.display = 'none';
       resetLedBulb();
       
       bluetoothDevice = null;
@@ -1014,6 +1062,14 @@
           const maxSecs = 360; // 6 mins limit
           const angle = Math.min(360, (totalSecs / maxSecs) * 360);
           timerProgress.style.setProperty('--timer-angle', `${angle}deg`);
+          
+          // Show warning message when timer exceeds 40 seconds (Test mode threshold)
+          const warningMsg = document.getElementById('warning-msg');
+          if (totalSecs >= 40) {
+            warningMsg.style.display = 'block';
+          } else {
+            warningMsg.style.display = 'none';
+          }
         }
       }
       else if (line.startsWith('status:')) {
@@ -1024,6 +1080,7 @@
         } else {
           timerStatus.innerText = '정지됨 ⏹️';
           timerStatus.style.color = 'var(--text-muted)';
+          document.getElementById('warning-msg').style.display = 'none';
         }
       }
       else if (line.startsWith('color:')) {
@@ -1040,23 +1097,46 @@
       ledBulb.className = 'led-bulb-wrapper';
       ledDesc.innerText = '타이머 대기 상태 (소등)';
       timerProgress.style.removeProperty('--timer-color');
+      
+      const charBody = document.getElementById('char-body');
+      const charMouth = document.getElementById('char-mouth');
+      const charEyes = document.getElementById('char-eyes');
+      
+      if (charBody) charBody.setAttribute('fill', '#cbd5e1');
+      if (charMouth) charMouth.setAttribute('d', 'M46 49 Q50 52 54 49');
+      if (charEyes) charEyes.innerHTML = '<circle cx="43" cy="40" r="2.5" fill="var(--text-main)"/><circle cx="57" cy="40" r="2.5" fill="var(--text-main)"/>';
     }
 
     function updateLedBulb(color) {
       ledBulb.className = 'led-bulb-wrapper';
+      const charBody = document.getElementById('char-body');
+      const charMouth = document.getElementById('char-mouth');
+      const charEyes = document.getElementById('char-eyes');
       
       if (color === 'GREEN') {
         ledBulb.classList.add('active-green');
         ledDesc.innerText = '안정 단계 (초록 조명)';
         timerProgress.style.setProperty('--timer-color', 'var(--color-green)');
+        
+        if (charBody) charBody.setAttribute('fill', 'var(--color-green)');
+        if (charMouth) charMouth.setAttribute('d', 'M46 49 Q50 53 54 49'); // Smiling mouth
+        if (charEyes) charEyes.innerHTML = '<path d="M40 40 Q43 37 45 40" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 40 Q57 37 59 40" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // Happy curved eyes
       } else if (color === 'YELLOW') {
         ledBulb.classList.add('active-yellow');
         ledDesc.innerText = '주의 단계 (노란 조명)';
         timerProgress.style.setProperty('--timer-color', 'var(--color-yellow)');
+        
+        if (charBody) charBody.setAttribute('fill', 'var(--color-yellow)');
+        if (charMouth) charMouth.setAttribute('d', 'M45 49 L55 49'); // Straight mouth
+        if (charEyes) charEyes.innerHTML = '<path d="M41 41 Q43 38 45 41" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 41 Q57 38 59 41" fill="none" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // Concerned eyes
       } else if (color === 'RED') {
         ledBulb.classList.add('active-red');
         ledDesc.innerText = '경고 단계! (빨간 조명 + 경보)';
         timerProgress.style.setProperty('--timer-color', 'var(--color-red)');
+        
+        if (charBody) charBody.setAttribute('fill', 'var(--color-red)');
+        if (charMouth) charMouth.setAttribute('d', 'M46 51 Q50 46 54 51'); // Sad/Crying mouth
+        if (charEyes) charEyes.innerHTML = '<path d="M40 38 L45 43 M45 38 L40 43" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/><path d="M55 38 L60 43 M60 38 L55 43" stroke="var(--text-main)" stroke-width="2.5" stroke-linecap="round"/>'; // Stressed X eyes
       } else {
         resetLedBulb();
       }
