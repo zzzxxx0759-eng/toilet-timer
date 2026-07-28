@@ -359,6 +359,58 @@
       transition: width 0.1s linear, background-color 0.4s ease;
     }
 
+    /* BLE Connection Overlay Screen Style */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-color); /* 완전 불투명 솔리드 배경으로 뒤 화면 원천 차단 */
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .overlay-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .overlay-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    #overlay-error-msg {
+      color: var(--color-danger);
+      font-size: 12px;
+      margin-top: 18px;
+      font-weight: 700;
+      min-height: 18px;
+    }
+
+    .setting-input {
+      border: 2px solid var(--outline-variant);
+      outline: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--surface);
+      color: var(--text-main);
+      text-align: center;
+      box-shadow: var(--shadow-ambient);
+    }
+
     /* Lockout Screen Overlay Style */
     .lockout-overlay {
       position: absolute;
