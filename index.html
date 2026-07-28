@@ -693,7 +693,7 @@
 
       <!-- Welcome Texts (한글 단일 문구로 단순화) -->
       <div class="ready-texts" style="margin: 16px 0;">
-        <h2 class="ready-title" style="font-size: 22px;">건강한 화장실 생활을 시작합시다!</h2>
+        <h2 class="ready-title" style="font-size: 22px;">시작하려면 버튼을 누르세요</h2>
       </div>
 
       <!-- Stats (Last Session 단일 카드로 축소 및 중앙 대칭 배치) -->
@@ -955,13 +955,14 @@
         const timeVal = line.substring(5);
         activeTime.innerText = timeVal;
         
-        // Circular progress logic based on seconds (Assuming max time is 6 mins = 360 seconds)
+        // progress logic based on seconds (Current Test Mode limit is 40 seconds)
         const parts = timeVal.split(':');
         if (parts.length === 2) {
           const m = parseInt(parts[0], 10);
           const s = parseInt(parts[1], 10);
           const totalSecs = (m * 60) + s;
-          const maxSecs = 360; // 6 mins limit
+          
+          const maxSecs = 40; // 테스트용 최대 시간: 40초 (실제 사용 시간으로 변경 시 360으로 수정)
           const progressPercent = Math.min(100, (totalSecs / maxSecs) * 100);
           topProgressFill.style.width = `${progressPercent}%`;
           
