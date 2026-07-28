@@ -662,14 +662,9 @@
 
     <!-- Lockout Screen Overlay (Stitch Lock Screen Spec) -->
     <div class="lockout-overlay" id="lockout-overlay">
-      <!-- 기절한 캐릭터 단독 일러스트로 교체 -->
+      <!-- 기절한 캐릭터 단독 일러스트로 교체 (잠금 해제 버튼 영구 제거 완료) -->
       <img class="lockout-image-card" src="https://lh3.googleusercontent.com/aida/AP1WRLvOAeu1ct9-AKpACAtziswEdrNEvKPGVH8IOLluyROcA7lxn1gVx0vu_XnSyXKVSOcAc3l07vwVKdqlTEtdZJ67XO4FQoWHvj2b7kJgQzj_5aw4blvSQcEsEU8UDtPVooiVCDuGV96ug9ExNzy9sEaQQkkUkNLddpEHUAIK_yga6xOvztssMXB4pinCzSnYuOPP3fCcq5S3xAOx459cNcj7FGOe3D12erg5SARaM8j6lTM97pIz5L-pa0xX" alt="Collapsed Buddy">
       <h2 class="lockout-title" style="font-size: 22px; color: var(--color-danger); margin-top: 10px; line-height: 1.4;">휴대폰이 잠금되었습니다.<br>화장실 이용을 종료하세요!</h2>
-      
-      <button class="btn-squishy" id="btn-unlock-device" style="background: #334155; border-color: #475569; color: #ffffff; width: 100%; max-width: 280px; margin-top: 24px; box-shadow: none;">
-        <i class="fa-solid fa-lock-open" style="color: #ffffff;"></i>
-        <span>잠금 해제 (타이머 리셋)</span>
-      </button>
     </div>
   
     <!-- Header Section -->
@@ -1147,10 +1142,6 @@
     document.getElementById('btn-start-timer').addEventListener('click', () => sendCommand('1'));
     document.getElementById('btn-finish-timer').addEventListener('click', () => sendCommand('1'));
     document.getElementById('btn-reset-timer').addEventListener('click', () => sendCommand('2'));
-    document.getElementById('btn-unlock-device').addEventListener('click', () => {
-      sendCommand('2'); // Send Reset command to ESP32 to unlock
-      lockoutOverlay.style.display = 'none';
-    });
     document.getElementById('btn-mute-buzzer').addEventListener('click', () => sendCommand('3'));
 
     document.getElementById('btn-clear-logs').addEventListener('click', () => {
