@@ -67,10 +67,16 @@ def lerp_color(c1, c2, ratio):
     return (r, g, b)
 
 def play_beep():
-    """경고음"""
-    buzzer.freq(2000)
-    buzzer.duty(512)
-    time.sleep(0.2)
+    """긴박한 사이렌 경보음 (800Hz ~ 1800Hz 왕복)"""
+    for _ in range(3): # 3회 삐오~삐오~ 반복
+        for f in range(800, 1800, 50):
+            buzzer.freq(f)
+            buzzer.duty(512)
+            time.sleep(0.008)
+        for f in range(1800, 800, -50):
+            buzzer.freq(f)
+            buzzer.duty(512)
+            time.sleep(0.008)
     buzzer.duty(0)
 
 def display_text(line1, line2=""):
